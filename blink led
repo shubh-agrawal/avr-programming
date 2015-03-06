@@ -1,0 +1,21 @@
+/*
+ * blinkLED.c
+ *
+ * Created: 09-12-2014 23:52:01
+ *  Author: SHUBH AGRAWAL
+ */ 
+
+
+#include <avr/io.h>
+#include <util/delay.h>
+#define F_CPU 16000000UL
+int main(void)
+{
+    while(1)
+    {DDRC=~(0);      /*assigning output command to all pins*/
+		PORTC=~(0);
+		_delay_ms(1000);
+		PORTC=0;   /*assigning high output to all pins*/
+        //TODO:: Please write your application code 
+    }
+}
