@@ -1,0 +1,7 @@
+
+AVRASM ver. 2.0.30  E:\avrstudio\bin2bacd\bin2bacd.asm Sun Sep 18 18:26:36 2005
+
+
+CSEG reset        00000001
+CSEG subtraction  00000005
+CSEG output       00000009

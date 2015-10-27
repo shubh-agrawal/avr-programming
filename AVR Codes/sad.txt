@@ -1,0 +1,281 @@
+#define F_CPU 16000000               
+
+#include<avr/io.h>
+#include<util/delay.h>
+#include<avr/interrupt.h>
+#include<inttypes.h>
+
+#define BIT(b) (1<<(b))
+#define CLEARBIT(x,b) x&=~b;
+#define SETBIT(x,b) x|=b;
+#define CHECKBIT(x,b) (x)&(b)
+
+
+
+void move_up02();
+void move_back13();
+void move_forwd02();
+void move_down02();
+void move_up13();	
+void move_back02();
+void move_forwd13();
+void move_down13();
+
+
+                  
+
+int main()
+{
+DDRA=0x00;
+DDRC=0xFF;
+DDRD=0xFF;
+
+   // while(1)
+	//{
+	    
+   	move_up02();
+	/*
+	move_back13();
+	move_forwd02();
+	move_down02();
+    move_up13();	
+	move_back02();
+	move_forwd13();
+    move_down13();
+     */
+   // }
+   	return 0;
+}
+
+void move_up02()
+    {		 
+	  int ul=0;
+	  while(ul<30)
+	  {
+	  
+		   SETBIT(PORTC,BIT(0));_delay_ms(1.5);
+		   CLEARBIT(PORTC,BIT(0));
+		   SETBIT(PORTC,BIT(1));_delay_ms(0.15);
+		   CLEARBIT(PORTC,BIT(1));
+		   SETBIT(PORTC,BIT(2));_delay_ms(1.5);
+		   CLEARBIT(PORTC,BIT(2));
+		   SETBIT(PORTC,BIT(3));_delay_ms(3.0);
+		   CLEARBIT(PORTC,BIT(3));
+
+		   _delay_ms(13.85);
+		   
+		   ul++;
+
+	  }
+    }
+	
+	
+	
+
+void move_back13()
+{
+int k=0;
+
+		     while(k<20)     
+		   
+		{
+			 SETBIT(PORTC,BIT(0));_delay_ms(1.5);
+			 CLEARBIT(PORTC,BIT(0));
+			 SETBIT(PORTC,BIT(1));_delay_ms(0.15);
+			 CLEARBIT(PORTC,BIT(1));
+			 SETBIT(PORTC,BIT(2));_delay_ms(1.5);
+			 CLEARBIT(PORTC,BIT(2));
+			 SETBIT(PORTC,BIT(3));_delay_ms(3.0);
+			 CLEARBIT(PORTC,BIT(3));
+			 
+			 
+             SETBIT(PORTC,BIT(5));_delay_ms(0.75);      
+		     CLEARBIT(PORTC,BIT(5));
+             
+		     SETBIT(PORTC,BIT(4));_delay_ms(2.5);      
+		     CLEARBIT(PORTC,BIT(4)); 
+                        
+             _delay_ms(6.2);
+		  
+		     k++;
+		}
+		
+}	
+			 
+			 
+			 
+void move_forwd02()
+{
+	int k=0;
+
+    while(k<15)
+    {	   
+		   SETBIT(PORTC,BIT(0));_delay_ms(1.5);   //0 deg pos
+		   CLEARBIT(PORTC,BIT(0));
+		   SETBIT(PORTC,BIT(1));_delay_ms(0.15);    //90 deg pos
+		   CLEARBIT(PORTC,BIT(1));
+		   SETBIT(PORTC,BIT(2));_delay_ms(1.5);
+		   CLEARBIT(PORTC,BIT(2));
+		   SETBIT(PORTC,BIT(3));_delay_ms(3.0);
+		   CLEARBIT(PORTC,BIT(3));
+
+         
+		   SETBIT(PORTC,BIT(4));_delay_ms(0.75);      //30 deg position
+		   CLEARBIT(PORTC,BIT(4));             
+           
+           SETBIT(PORTC,BIT(6));_delay_ms(2.5);
+		   CLEARBIT(PORTC,BIT(6));
+		   
+		   _delay_ms(6.2);
+		   
+		   k++;
+		   
+	}
+	   
+	   
+}	   
+
+     
+void move_down02()
+{
+    
+int k=0;
+
+		   while(k<10)         
+		     {
+			 SETBIT(PORTC,BIT(0));_delay_ms(3.0);
+			 CLEARBIT(PORTC,BIT(0));
+			 SETBIT(PORTC,BIT(1));_delay_ms(0.15);
+			 CLEARBIT(PORTC,BIT(1));
+			 SETBIT(PORTC,BIT(2));_delay_ms(0.15);
+			 CLEARBIT(PORTC,BIT(2));
+			 SETBIT(PORTC,BIT(3));_delay_ms(3.0);
+			 CLEARBIT(PORTC,BIT(3));
+			 
+			 
+		   
+           _delay_ms(4.9);
+             
+		  
+          
+			 k++;
+			 }
+			 
+ }
+ 
+ 
+ 
+ void move_up13()
+    {		 
+	  int ul=0;
+	  while(ul<50)
+	  {
+	  
+		   SETBIT(PORTC,BIT(0));_delay_ms(3.0);
+		   CLEARBIT(PORTC,BIT(0));
+		   SETBIT(PORTC,BIT(1));_delay_ms(1.5);
+		   CLEARBIT(PORTC,BIT(1));
+		   SETBIT(PORTC,BIT(2));_delay_ms(0.65);
+		   CLEARBIT(PORTC,BIT(2));
+		   SETBIT(PORTC,BIT(3));_delay_ms(1.5);
+		   CLEARBIT(PORTC,BIT(3));
+
+           
+		   _delay_ms(6.10);
+		   
+		   ul++;
+
+	  }
+    }
+	
+	
+	
+
+void move_back02()
+{
+int k=0;
+
+		     while(k<20)     
+		   
+		{
+			 SETBIT(PORTC,BIT(0));_delay_ms(3.0);
+			 CLEARBIT(PORTC,BIT(0));
+			 SETBIT(PORTC,BIT(1));_delay_ms(1.5);
+			 CLEARBIT(PORTC,BIT(1));
+			 SETBIT(PORTC,BIT(2));_delay_ms(0.65);
+			 CLEARBIT(PORTC,BIT(2));
+			 SETBIT(PORTC,BIT(3));_delay_ms(1.5);
+			 CLEARBIT(PORTC,BIT(3));
+			 
+			 SETBIT(PORTC,BIT(4));_delay_ms(2.5);     
+		     CLEARBIT(PORTC,BIT(4)); 
+             
+             SETBIT(PORTC,BIT(6));_delay_ms(0.75);
+		     CLEARBIT(PORTC,BIT(6));
+		     
+             _delay_ms(6.20);
+		  
+		     k++;
+		}
+		
+	}	
+	
+
+
+void move_forwd13()
+{
+	int k=0;
+
+    while(k<15)
+    {	   
+		   SETBIT(PORTC,BIT(0));_delay_ms(3.0);   //0 deg pos
+		   CLEARBIT(PORTC,BIT(0));
+		   SETBIT(PORTC,BIT(1));_delay_ms(1.5);    //90 deg pos
+		   CLEARBIT(PORTC,BIT(1));
+		   SETBIT(PORTC,BIT(2));_delay_ms(0.65);
+		   CLEARBIT(PORTC,BIT(2));
+		   SETBIT(PORTC,BIT(3));_delay_ms(1.5);
+		   CLEARBIT(PORTC,BIT(3));
+
+         
+		              
+           SETBIT(PORTC,BIT(5));_delay_ms(2.5);      //75 deg position  
+		   CLEARBIT(PORTC,BIT(5));
+           
+		   SETBIT(PORTC,BIT(7));_delay_ms(0.75);
+		   CLEARBIT(PORTC,BIT(7));
+		   
+		   _delay_ms(6.2);
+		   
+		   k++;
+		   
+	}
+	   
+}	   
+
+     
+void move_down13()
+{
+    int k=0;
+
+		   while(k<10)         
+		     {
+			 SETBIT(PORTC,BIT(0));_delay_ms(3.0);
+			 CLEARBIT(PORTC,BIT(0));
+			 SETBIT(PORTC,BIT(1));_delay_ms(0.15);
+			 CLEARBIT(PORTC,BIT(1));
+			 SETBIT(PORTC,BIT(2));_delay_ms(0.65);
+			 CLEARBIT(PORTC,BIT(2));
+			 SETBIT(PORTC,BIT(3));_delay_ms(3.0);
+			 CLEARBIT(PORTC,BIT(3));
+			 
+			 
+             _delay_ms(4.9);
+             
+		     k++;
+			}
+		
+			 
+ }
+ 
+ 

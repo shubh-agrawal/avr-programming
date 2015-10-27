@@ -1,0 +1,3 @@
+lm35.asm have a temperature sensor connected to PA0
+and output is shown on two 7segment displays connected in 
+PORTB using 7447

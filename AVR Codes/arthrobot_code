@@ -1,0 +1,332 @@
+#define F_CPU 16000000               //CHECK!!!!!!!!!!!!!!!!!
+
+#include<avr/io.h>
+#include<util/delay_x.h>
+#include<avr/interrupt.h>
+#include<inttypes.h>
+
+#define BIT(b) (1<<(b))
+#define CLEARBIT(x,b) x&=~b;
+#define SETBIT(x,b) x|=b;
+#define CHECKBIT(x,b) (x)&(b)
+
+int upper_limit=0;
+static int from_where_0=1,from_where_2=1;
+static int r=0,s=0;
+
+void move_forwd02();
+void move_forwd13();
+void move_backwd02();
+void move_backwd13();
+void lift_servo13();
+void down_servo();
+void lift_servo02();
+//int check_turn();                   
+
+int main()
+{
+DDRA=0x00;
+DDRC=0xFF;
+DDRD=0xFF;
+
+  while(1)
+    {
+	move_forwd02();
+    lift_servo13();
+	move_backwd02();
+	down_servo();
+	//check turn
+	//configure
+	move_forwd13();
+	lift_servo02();
+	move_backwd13();
+	down_servo();
+	}
+	return 0;
+}
+
+
+         void move_forwd02()
+		 {
+		 sei();
+		 SETBIT(PORTD,(BIT(0)+BIT(4)));
+		 int k=0;
+		 while((CHECKBIT(PORTD,BIT(0)))>=1)
+		   {
+		   static int i=0;
+		   SETBIT(PORTC,BIT(0));_delay_ms(1.25);
+		   CLEARBIT(PORTC,BIT(0));
+		   SETBIT(PORTC,BIT(1));_delay_ms(0.75);
+		   CLEARBIT(PORTC,BIT(1));
+		   SETBIT(PORTC,BIT(2));_delay_ms(1.25);
+		   CLEARBIT(PORTC,BIT(2));
+		   SETBIT(PORTC,BIT(3));_delay_ms(0.75);
+		   CLEARBIT(PORTC,BIT(3));
+		   
+		   if(i==0)
+		      {TCCR0=(TCCR0&0x00)|(1<<CS02);          //prescalar=256
+              TCNT0=0;
+			  TIMSK=(1<<TOIE0)|(1<<TOIE2);
+			  i++;
+			  }
+           _delay_ms(16.00);
+		   }
+
+           TIMSK=(TIMSK)&0b00000000;
+
+		   while(k<2)             //TO BE DETERMINED EXPERIMENTALLY
+		     {
+			 SETBIT(PORTC,BIT(0));_delay_ms(0.75);
+			 CLEARBIT(PORTC,BIT(0));
+			 SETBIT(PORTC,BIT(1));_delay_ms(0.75);
+			 CLEARBIT(PORTC,BIT(1));
+			 SETBIT(PORTC,BIT(2));_delay_ms(0.75);
+			 CLEARBIT(PORTC,BIT(2));
+			 SETBIT(PORTC,BIT(3));_delay_ms(0.75);
+			 CLEARBIT(PORTC,BIT(3));
+			 _delay_ms(17.00);
+			 k++;
+			 }
+	
+	         return;
+            }	
+			
+			
+				  
+
+void move_forwd13()
+		 {
+		 sei();
+		 SETBIT(PORTD,(BIT(2)+BIT(6)));
+		 int k=0;
+
+		 while((CHECKBIT(PORTD,BIT(2)))>=1)
+		   {
+		   static int j=0;
+		   SETBIT(PORTC,BIT(0));_delay_ms(0.75);
+		   CLEARBIT(PORTC,BIT(0));
+		   SETBIT(PORTC,BIT(1));_delay_ms(1.25);
+		   CLEARBIT(PORTC,BIT(1));
+		   SETBIT(PORTC,BIT(2));_delay_ms(0.75);
+		   CLEARBIT(PORTC,BIT(2));
+		   SETBIT(PORTC,BIT(3));_delay_ms(1.25);
+		   CLEARBIT(PORTC,BIT(3));
+		   
+		   if(j==0)
+		      {
+			  TCCR2=(TCCR2&0x00)|(1<<CS22);          //prescalar=256
+              TCNT2=0;
+			  TIMSK=(1<<TOIE0)|(1<<TOIE2);
+			  j++;
+			  }
+           _delay_ms(16.00);
+		   }
+
+           TIMSK=(TIMSK)&0b00000000;
+		   while(k<2)             //TO BE DETERMINED EXPERIMENTALLY
+		     {
+			 SETBIT(PORTC,BIT(0));_delay_ms(0.75);
+			 CLEARBIT(PORTC,BIT(0));
+			 SETBIT(PORTC,BIT(1));_delay_ms(0.75);
+			 CLEARBIT(PORTC,BIT(1));
+			 SETBIT(PORTC,BIT(2));_delay_ms(0.75);
+			 CLEARBIT(PORTC,BIT(2));
+			 SETBIT(PORTC,BIT(3));_delay_ms(0.75);
+			 CLEARBIT(PORTC,BIT(3));
+			 _delay_ms(17.00);
+			 k++;
+			 }
+	
+	         return;
+            }	
+			
+			
+				  
+
+void move_backwd02()
+{
+SETBIT(PORTD,(BIT(1)+BIT(5)));    
+
+TCCR0=(TCCR0&0x00)|(1<<CS02);                       //prescalar=256
+TCNT0=0;
+TIMSK=(1<<TOIE0)|(1<<TOIE2);
+
+do{
+
+SETBIT(PORTC,BIT(0));_delay_ms(0.75);
+CLEARBIT(PORTC,BIT(0));
+
+SETBIT(PORTC,BIT(1));_delay_ms(0.75);
+CLEARBIT(PORTC,BIT(1));
+
+SETBIT(PORTC,BIT(2));_delay_ms(0.75);
+CLEARBIT(PORTC,BIT(2));
+
+SETBIT(PORTC,BIT(3));_delay_ms(0.75);
+CLEARBIT(PORTC,BIT(3));
+
+}while((CHECKBIT(PORTD,BIT(1)))>=1);
+
+TIMSK=(TIMSK)&0b00000000;
+
+}
+
+
+void move_backwd13()
+{
+SETBIT(PORTD,(BIT(3)+BIT(7)));             
+
+TCCR2=(TCCR2&0x00)|(1<<CS22);                       //prescalar=256
+TCNT2=0;
+TIMSK=(1<<TOIE0)|(1<<TOIE2);
+
+do{
+
+SETBIT(PORTC,BIT(0));_delay_ms(0.75);
+CLEARBIT(PORTC,BIT(0));
+
+SETBIT(PORTC,BIT(1));_delay_ms(0.75);
+CLEARBIT(PORTC,BIT(1));
+
+SETBIT(PORTC,BIT(2));_delay_ms(0.75);
+CLEARBIT(PORTC,BIT(2));
+
+SETBIT(PORTC,BIT(3));_delay_ms(0.75);
+CLEARBIT(PORTC,BIT(3));
+
+}while((CHECKBIT(PORTD,BIT(3)))>=1);
+
+TIMSK=(TIMSK)&0b00000000;
+
+}
+
+
+        void lift_servo02()
+        {int k=0; 
+         while(k<2)             //TO BE DETERMINED EXPERIMENTALLY
+		     {
+			 SETBIT(PORTC,BIT(0));_delay_ms(1.25);
+			 CLEARBIT(PORTC,BIT(0));
+			 SETBIT(PORTC,BIT(1));_delay_ms(0.75);
+			 CLEARBIT(PORTC,BIT(1));
+			 SETBIT(PORTC,BIT(2));_delay_ms(1.25);
+			 CLEARBIT(PORTC,BIT(2));
+			 SETBIT(PORTC,BIT(3));_delay_ms(0.75);
+			 CLEARBIT(PORTC,BIT(3));
+			 _delay_ms(16.00);
+			 k++;
+			 }
+	
+	         return;
+            }	
+
+
+
+void lift_servo13()
+        {int k=0; 
+         while(k<2)             //TO BE DETERMINED EXPERIMENTALLY
+		     {
+			 SETBIT(PORTC,BIT(0));_delay_ms(0.75);
+			 CLEARBIT(PORTC,BIT(0));
+			 SETBIT(PORTC,BIT(1));_delay_ms(1.25);
+			 CLEARBIT(PORTC,BIT(1));
+			 SETBIT(PORTC,BIT(2));_delay_ms(0.75);
+			 CLEARBIT(PORTC,BIT(2));
+			 SETBIT(PORTC,BIT(3));_delay_ms(1.25);
+			 CLEARBIT(PORTC,BIT(3));
+			 _delay_ms(16.00);
+			 k++;
+			 }
+	
+	         return;
+          }	
+
+
+void down_servo()
+        {int k=0; 
+         while(k<2)             //TO BE DETERMINED EXPERIMENTALLY
+		     {
+			 SETBIT(PORTC,BIT(0));_delay_ms(0.75);
+			 CLEARBIT(PORTC,BIT(0));
+			 SETBIT(PORTC,BIT(1));_delay_ms(0.75);
+			 CLEARBIT(PORTC,BIT(1));
+			 SETBIT(PORTC,BIT(2));_delay_ms(0.75);
+			 CLEARBIT(PORTC,BIT(2));
+			 SETBIT(PORTC,BIT(3));_delay_ms(0.75);
+			 CLEARBIT(PORTC,BIT(3));
+			 _delay_ms(17.00);
+			 k++;
+			 }
+	
+	         return;
+          }	
+
+
+
+ISR(TIMER0_OVF_vect)
+{
+if((from_where_0%2)!=0)   upper_limit=5;  //TO BE DETERMINED EXPERIMENTALLY
+else upper_limit=6;                      //TO BE DETERMINED EXPERIMENTALLY
+
+if(r<upper_limit)
+{r++;
+return;
+}
+
+if(r==upper_limit)
+{CLEARBIT(PORTD,(BIT(0)+BIT(1)+BIT(4)+BIT(5)));
+ r=0;
+ return;
+}
+}
+
+
+ISR(TIMER2_OVF_vect)
+{
+if((from_where_2%2)!=0)   upper_limit=5;  //TO BE DETERMINED EXPERIMENTALLY
+else upper_limit=6;                      //TO BE DETERMINED EXPERIMENTALLY
+
+while(s<upper_limit)
+{s++;
+return;
+}
+
+if(s==upper_limit)
+{CLEARBIT(PORTD,(BIT(2)+BIT(3)+BIT(6)+BIT(7)));
+ s=0;
+ return;
+
+}
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

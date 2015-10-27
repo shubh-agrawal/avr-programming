@@ -1,0 +1,13 @@
+<ASSEMBLER_INFO>
+ <WORKING_DIR>c:\</WORKING_DIR>
+ <INCLUDE_PATH>
+  <DIR>C:\Program Files\Atmel\AVR Tools\AvrAssembler2\Appnotes</DIR>
+ </INCLUDE_PATH>
+ <INCLUDED_FILES>
+ </INCLUDED_FILES>
+ <LABELS>
+  <RESET><FILE>E:\avrstudio\bin2bacd\bin2bacd.asm</FILE><LINE>18</LINE></RESET>
+  <SUBTRACTION><FILE>E:\avrstudio\bin2bacd\bin2bacd.asm</FILE><LINE>26</LINE></SUBTRACTION>
+  <OUTPUT><FILE>E:\avrstudio\bin2bacd\bin2bacd.asm</FILE><LINE>33</LINE></OUTPUT>
+ </LABELS>
+</ASSEMBLER_INFO>

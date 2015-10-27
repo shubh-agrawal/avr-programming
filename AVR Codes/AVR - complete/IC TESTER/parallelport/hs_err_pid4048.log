@@ -1,0 +1,44 @@
+
+An unexpected exception has been detected in native code outside the VM.
+Unexpected Signal : EXCEPTION_PRIV_INSTRUCTION occurred at PC=0x1000107B
+Function=[Unknown.]
+Library=C:\j2sdk1.4.0\jre\bin\parport.dll
+
+NOTE: We are unable to locate the function name symbol for the error
+      just occurred. Please refer to release documentation for possible
+      reason and solutions.
+
+
+Current Java thread:
+	at parport.ParallelPort.writeOneByte(Native Method)
+	at parport.ParallelPort1.writeControlPort(ParallelPort1.java:45)
+	at Port1.main(Port1.java:17)
+
+Dynamic libraries:
+0x00400000 - 0x00406000 	C:\j2sdk1.4.0\bin\java.exe
+0x7C900000 - 0x7C9B0000 	C:\WINDOWS\system32\ntdll.dll
+0x7C800000 - 0x7C8F4000 	C:\WINDOWS\system32\kernel32.dll
+0x77DD0000 - 0x77E6B000 	C:\WINDOWS\system32\ADVAPI32.dll
+0x77E70000 - 0x77F01000 	C:\WINDOWS\system32\RPCRT4.dll
+0x77C10000 - 0x77C68000 	C:\WINDOWS\system32\MSVCRT.dll
+0x6D330000 - 0x6D442000 	C:\j2sdk1.4.0\jre\bin\client\jvm.dll
+0x77D40000 - 0x77DD0000 	C:\WINDOWS\system32\USER32.dll
+0x77F10000 - 0x77F56000 	C:\WINDOWS\system32\GDI32.dll
+0x76B40000 - 0x76B6D000 	C:\WINDOWS\system32\WINMM.dll
+0x6D1D0000 - 0x6D1D7000 	C:\j2sdk1.4.0\jre\bin\hpi.dll
+0x6D300000 - 0x6D30D000 	C:\j2sdk1.4.0\jre\bin\verify.dll
+0x6D210000 - 0x6D228000 	C:\j2sdk1.4.0\jre\bin\java.dll
+0x6D320000 - 0x6D32D000 	C:\j2sdk1.4.0\jre\bin\zip.dll
+0x10000000 - 0x1000B000 	C:\j2sdk1.4.0\jre\bin\parport.dll
+0x76C90000 - 0x76CB8000 	C:\WINDOWS\system32\imagehlp.dll
+0x59A60000 - 0x59B01000 	C:\WINDOWS\system32\DBGHELP.dll
+0x77C00000 - 0x77C08000 	C:\WINDOWS\system32\VERSION.dll
+0x76BF0000 - 0x76BFB000 	C:\WINDOWS\system32\PSAPI.DLL
+
+Local Time = Wed Feb 15 14:43:42 2006
+Elapsed Time = 0
+#
+# The exception above was detected in native code outside the VM
+#
+# Java VM: Java HotSpot(TM) Client VM (1.4.0-b92 mixed mode)
+#

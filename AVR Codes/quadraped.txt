@@ -1,0 +1,1158 @@
+  #define F_CPU 16000000               //CHECK!!!!!!!!!!!!!!!!!
+
+#include<avr/io.h>
+#include<util/delay.h>
+#include<avr/interrupt.h>
+#include<inttypes.h>
+
+#define BIT(b) (1<<(b))
+#define CLEARBIT(x,b) x&=~b;
+#define SETBIT(x,b) x|=b;
+#define CHECKBIT(x,b) (x)&(b)
+
+
+
+void move_front_right();
+void move_back();
+void move_right();
+void move_left();
+void move_front_left();
+
+                  
+
+int main()
+{
+DDRA=0x00;
+DDRC=0xFF;
+DDRD=0xFF;
+
+    while(1)
+	{ 
+   
+   if(((CHECKBIT(PINA,BIT(7)))>0))
+   {
+   
+    move_front_left();
+   }
+    if(((CHECKBIT(PINA,BIT(6)))>0))\
+	{
+   move_front_right();
+   }
+   
+  // }
+  /*
+    if(((CHECKBIT(PINA,BIT(6)))>0))
+   {
+   move_back();
+   }
+   else if(((CHECKBIT(PINA,BIT(5)))>0))
+   {
+   move_right();
+   }
+   else if(((CHECKBIT(PINA,BIT(4)))>0))
+   {
+   move_left();
+   }*/
+
+   }
+	return 0;
+}
+
+
+         void move_front_right()
+		 {
+		
+		 int k=0;
+         	 int upperlimit=35;
+		  
+		 /*upperlimit=time for legs to take that position/20ms
+		                                              
+		
+		 */   
+	      int r=0;
+		  SETBIT(PORTB, BIT(0));
+		 while(r<upperlimit)    /*TO BE DETERMINED EXPERIMENTALLY while 
+		                          loop stops when 02 legs stand in air 
+								  in 75 deg pos & 13 legs keep pushin 
+								  ground from 75 deg till 30 deg pos*/
+		   {
+		   
+		   if(r<27)
+		   {
+		   SETBIT(PORTC,BIT(0));_delay_ms(1.50);
+		   CLEARBIT(PORTC,BIT(0));
+		   }
+		   else
+		   {
+		   SETBIT(PORTC,BIT(0));_delay_ms(3.0);
+		   CLEARBIT(PORTC,BIT(0));
+		   }
+		   
+		   SETBIT(PORTC,BIT(1));_delay_ms(0.15);
+		   CLEARBIT(PORTC,BIT(1));
+		   if(r<30)
+		   {
+		   SETBIT(PORTC,BIT(2));_delay_ms(1.65);
+		   CLEARBIT(PORTC,BIT(2));
+		   }
+		   SETBIT(PORTC,BIT(3));_delay_ms(3.0);
+		   CLEARBIT(PORTC,BIT(3));
+
+		/*   if(((CHECKBIT(PINA,BIT(5)))>0))     //right
+           {
+		   move_right();
+		   }
+		  
+		  else if(((CHECKBIT(PINA,BIT(6)))>0))  //back
+
+		   {
+		   move_back();
+		   }
+		  
+		   else if(((CHECKBIT(PINA,BIT(4)))>0))  //left
+
+		   {
+		   move_left();
+		   }
+
+           else                                       //front
+		   {
+		   */
+		   if(r<27)
+		   {
+		   SETBIT(PORTC,BIT(4));_delay_ms(1.527);      //75 deg position
+		   CLEARBIT(PORTC,BIT(4));
+            }
+                   
+           SETBIT(PORTC,BIT(5));_delay_ms(0.12);      //30 deg position  
+		   CLEARBIT(PORTC,BIT(5));
+		   if(r<30)
+		   {
+           SETBIT(PORTC,BIT(6));_delay_ms(1.68);
+		   CLEARBIT(PORTC,BIT(6));
+		   }
+		   SETBIT(PORTC,BIT(7));_delay_ms(2.5);
+		   CLEARBIT(PORTC,BIT(7));
+            _delay_ms(7.873);
+            
+		   
+           
+		   
+		   r++;
+
+		   }
+
+          
+
+		   while(k<15)             /*TO BE DETERMINED EXPERIMENTALLY while
+		                           loop stops when 02 legs get down to 75
+								   deg pos & 13 legs to 30 deg pos on ground*/
+		   
+		    
+		     {
+			 SETBIT(PORTC,BIT(0));_delay_ms(3.0);
+			 CLEARBIT(PORTC,BIT(0));
+			 SETBIT(PORTC,BIT(1));_delay_ms(0.15);
+			 CLEARBIT(PORTC,BIT(1));
+			 SETBIT(PORTC,BIT(2));_delay_ms(0.65);
+			 CLEARBIT(PORTC,BIT(2));
+			 SETBIT(PORTC,BIT(3));_delay_ms(3.0);
+			 CLEARBIT(PORTC,BIT(3));
+              
+		  /* if(((CHECKBIT(PINA,BIT(5)))>0))             //RIGHT 
+		  {
+
+		   move_right();
+		   }
+		  
+		  else if(((CHECKBIT(PINA,BIT(6)))>0))  //back
+
+		   {
+		   move_back();
+		   }
+		  
+		   else if(((CHECKBIT(PINA,BIT(4)))>0))  //left
+
+		   {
+		   move_left();
+		   }
+
+           else
+		   {
+		   
+		   */
+		   if(k<10)
+		   {
+		   SETBIT(PORTC,BIT(4));_delay_ms(0.15);      //75 deg position
+		   CLEARBIT(PORTC,BIT(4));
+            } 
+                              
+           SETBIT(PORTC,BIT(5));_delay_ms(0.10);      //30 deg position  
+		   CLEARBIT(PORTC,BIT(5));
+		   if(k<6)
+		   {
+           SETBIT(PORTC,BIT(6));_delay_ms(1.7);
+		   CLEARBIT(PORTC,BIT(6));
+		   }
+		   else
+		   {
+		    SETBIT(PORTC,BIT(6));_delay_ms(0.15);
+		   CLEARBIT(PORTC,BIT(6));
+		   }
+		   SETBIT(PORTC,BIT(7));_delay_ms(2.8);
+		   CLEARBIT(PORTC,BIT(7));
+            _delay_ms(8.73);
+            
+		   
+
+		  
+			 k++;
+			 }
+	
+	         
+            	
+			
+			
+				  
+
+
+
+
+		  
+         int upperlimit_=35;                   
+		                                              
+		int r_=0;
+		int k_=0;										  
+		    
+			  
+		 while(r_<upperlimit_)         /*TO BE DETERMINED EXPERIMENTALLY while 
+		                          loop stops when 13 legs stand in air 
+								  in 75 deg pos & 02 legs keep pushin 
+								  ground from 75 deg till 30 deg pos*/
+		   {  
+		   
+		   
+		   SETBIT(PORTC,BIT(0));_delay_ms(3.0);   //0 deg pos
+		   CLEARBIT(PORTC,BIT(0));
+		   SETBIT(PORTC,BIT(1));_delay_ms(1.50);    //90 deg pos
+		   CLEARBIT(PORTC,BIT(1));
+		   SETBIT(PORTC,BIT(2));_delay_ms(0.65);
+		   CLEARBIT(PORTC,BIT(2));
+		   SETBIT(PORTC,BIT(3));_delay_ms(0.75);
+		   CLEARBIT(PORTC,BIT(3));
+/*
+         if(((CHECKBIT(PINA,BIT(5)))>0))     //right
+           {
+		   move_right();
+		   }
+		  
+		  else if(((CHECKBIT(PINA,BIT(6)))>0))  //back
+
+		   {
+		   move_back();
+		   }
+		  
+		   else if(((CHECKBIT(PINA,BIT(4)))>0))  //left
+
+		   {
+		   move_left();
+		   }
+            else                                           //Front
+			{
+			*/
+			if(k<27)
+			{
+			
+		   SETBIT(PORTC,BIT(4));_delay_ms(2.5);      //30 deg position
+		   CLEARBIT(PORTC,BIT(4));
+           }                    
+           SETBIT(PORTC,BIT(5));_delay_ms(2.0);      //75 deg position  
+		   CLEARBIT(PORTC,BIT(5));
+		   if(k<27)
+		   {
+           SETBIT(PORTC,BIT(6));_delay_ms(0.15);
+		   CLEARBIT(PORTC,BIT(6));
+		   }
+		   SETBIT(PORTC,BIT(7));_delay_ms(1.527);
+		   CLEARBIT(PORTC,BIT(7));
+           _delay_ms(7.17);
+             
+		  
+          
+		   r_++;
+		   }
+
+          
+
+		   while(k_<15)             /*TO BE DETERMINED EXPERIMENTALLY while
+		                           loop stops when 13 legs get down to 75
+								   deg pos & 02 legs to 30 deg pos on ground*/
+		   
+		     {
+			 SETBIT(PORTC,BIT(0));_delay_ms(3.0);
+			 CLEARBIT(PORTC,BIT(0));
+			 SETBIT(PORTC,BIT(1));_delay_ms(0.15);
+			 CLEARBIT(PORTC,BIT(1));
+			 SETBIT(PORTC,BIT(2));_delay_ms(0.65);
+			 CLEARBIT(PORTC,BIT(2));
+			 SETBIT(PORTC,BIT(3));_delay_ms(3.0);
+			 CLEARBIT(PORTC,BIT(3));
+
+			/*  if(((CHECKBIT(PINA,BIT(5)))>0))     //right
+           {
+		   move_right();
+		   }
+		  
+		  else if(((CHECKBIT(PINA,BIT(6)))>0))  //back
+
+		   {
+		   move_back();
+		   }
+		  
+		   else if(((CHECKBIT(PINA,BIT(4)))>0))  //left
+
+		   {
+		   move_left();
+		   }
+
+		    else                                       //front
+			{
+		     */              
+           SETBIT(PORTC,BIT(5));_delay_ms(1.58);      //75 deg position  
+		   CLEARBIT(PORTC,BIT(5));
+           
+		   SETBIT(PORTC,BIT(7));_delay_ms(0.15);
+		   CLEARBIT(PORTC,BIT(7));
+           _delay_ms(11.47);
+             
+		  
+          
+			 k_++;
+			 }
+	
+	         return;
+            }	
+
+
+
+			
+			void move_front_left()
+		 {
+		
+		 int k=0;
+         int upperlimit=15;
+		  
+		 /*upperlimit=time for legs to take that position/20ms
+		                                              
+		
+		 */ 
+	      int r=0;
+		 while(r<upperlimit)    /*TO BE DETERMINED EXPERIMENTALLY while 
+		                          loop stops when 02 legs stand in air 
+								  in 75 deg pos & 13 legs keep pushin 
+								  ground from 75 deg till 30 deg pos*/
+		   {
+		   
+		   SETBIT(PORTC,BIT(0));_delay_ms(1.25);
+		   CLEARBIT(PORTC,BIT(0));
+		   SETBIT(PORTC,BIT(1));_delay_ms(0.15);
+		   CLEARBIT(PORTC,BIT(1));
+		   SETBIT(PORTC,BIT(2));_delay_ms(2.5);
+		   CLEARBIT(PORTC,BIT(2));
+		   SETBIT(PORTC,BIT(3));_delay_ms(4.05);
+		   CLEARBIT(PORTC,BIT(3));
+
+		   SETBIT(PORTC,BIT(4));_delay_ms(0.75);      //75 deg position
+		   CLEARBIT(PORTC,BIT(4));                    
+           SETBIT(PORTC,BIT(5));_delay_ms(0.5);      //30 deg position  
+		   CLEARBIT(PORTC,BIT(5));
+           SETBIT(PORTC,BIT(6));_delay_ms(4.0);
+		   CLEARBIT(PORTC,BIT(6));
+		   SETBIT(PORTC,BIT(7));_delay_ms(4.0);
+		   CLEARBIT(PORTC,BIT(7));
+            _delay_ms(2.7);
+		   
+           
+		   r++;
+
+		   }
+		     while(k<5)             /*TO BE DETERMINED EXPERIMENTALLY while
+		                           loop stops when 02 legs get down to 75
+								   deg pos & 13 legs to 30 deg pos on ground*/
+		   
+		    
+		     {
+			 SETBIT(PORTC,BIT(0));_delay_ms(4.05);
+			 CLEARBIT(PORTC,BIT(0));
+			 SETBIT(PORTC,BIT(1));_delay_ms(0.15);
+			 CLEARBIT(PORTC,BIT(1));
+			 SETBIT(PORTC,BIT(2));_delay_ms(0.15);
+			 CLEARBIT(PORTC,BIT(2));
+			 SETBIT(PORTC,BIT(3));_delay_ms(4.05);
+			 CLEARBIT(PORTC,BIT(3));
+              
+		   _delay_ms(11.6);
+		  
+		   
+
+		  
+			 k++;
+			 }
+	 int upperlimit_=15;                   
+		                                              
+		int r_=0;
+		int k_=0;										  
+		    
+			  
+		 while(r_<upperlimit_)         /*TO BE DETERMINED EXPERIMENTALLY while 
+		                          loop stops when 13 legs stand in air 
+								  in 75 deg pos & 02 legs keep pushin 
+								  ground from 75 deg till 30 deg pos*/
+		   {  
+		   
+		   
+		   SETBIT(PORTC,BIT(0));_delay_ms(4.05);   //0 deg pos
+		   CLEARBIT(PORTC,BIT(0));
+		   SETBIT(PORTC,BIT(1));_delay_ms(1.50);    //90 deg pos
+		   CLEARBIT(PORTC,BIT(1));
+		   SETBIT(PORTC,BIT(2));_delay_ms(0.15);
+		   CLEARBIT(PORTC,BIT(2));
+		   SETBIT(PORTC,BIT(3));_delay_ms(1.50);
+		   CLEARBIT(PORTC,BIT(3));
+
+         
+		   SETBIT(PORTC,BIT(4));_delay_ms(4.0);      //30 deg position
+		   CLEARBIT(PORTC,BIT(4));                    
+           SETBIT(PORTC,BIT(5));_delay_ms(4.0);      //75 deg position  
+		   CLEARBIT(PORTC,BIT(5));
+           SETBIT(PORTC,BIT(6));_delay_ms(0.75);
+		   CLEARBIT(PORTC,BIT(6));
+		   SETBIT(PORTC,BIT(7));_delay_ms(0.5);
+		   CLEARBIT(PORTC,BIT(7));
+           _delay_ms(3.55);
+            
+		  
+          
+		   r_++;
+		   }
+
+          
+
+		   while(k_<5)             /*TO BE DETERMINED EXPERIMENTALLY while
+		                           loop stops when 13 legs get down to 75
+								   deg pos & 02 legs to 30 deg pos on ground*/
+		   
+		     {
+			 SETBIT(PORTC,BIT(0));_delay_ms(4.05);
+			 CLEARBIT(PORTC,BIT(0));
+			 SETBIT(PORTC,BIT(1));_delay_ms(0.15);
+			 CLEARBIT(PORTC,BIT(1));
+			 SETBIT(PORTC,BIT(2));_delay_ms(0.15);
+			 CLEARBIT(PORTC,BIT(2));
+			 SETBIT(PORTC,BIT(3));_delay_ms(4.05);
+			 CLEARBIT(PORTC,BIT(3));
+
+			
+           _delay_ms(11.6);
+             
+		  
+          
+			 k_++;
+			 }
+			 
+		   return 0;
+		   }
+
+			
+		
+			
+		  void move_back()
+		 {
+		
+		 int k=0;
+         int upperlimit=3;
+		  
+		 /*upperlimit=time for legs to take that position/20ms
+		                                              
+		
+		 */   
+	      int r=0;
+		 while(r<upperlimit)    /*TO BE DETERMINED EXPERIMENTALLY while 
+		                          loop stops when 02 legs stand in air 
+								  in 75 deg pos & 13 legs keep pushin 
+								  ground from 75 deg till 30 deg pos*/
+		   {
+		   
+		   SETBIT(PORTC,BIT(0));_delay_ms(1.50);
+		   CLEARBIT(PORTC,BIT(0));
+		   SETBIT(PORTC,BIT(1));_delay_ms(0.75);
+		   CLEARBIT(PORTC,BIT(1));
+		   SETBIT(PORTC,BIT(2));_delay_ms(1.50);
+		   CLEARBIT(PORTC,BIT(2));
+		   SETBIT(PORTC,BIT(3));_delay_ms(0.75);
+		   CLEARBIT(PORTC,BIT(3));
+
+		   if(((CHECKBIT(PINA,BIT(5)))>0))     //right
+           {
+		   move_right();
+		   }
+		  
+		  else if(((CHECKBIT(PINA,BIT(7)))>0))  //front
+
+		   {
+		   move_front();
+		   }
+		  
+		   else if(((CHECKBIT(PINA,BIT(4)))>0))  //left
+
+		   {
+		   move_left();
+		   }
+
+           else                                       //back
+		   {
+		   SETBIT(PORTC,BIT(4));_delay_ms(1.00);      //30 deg position
+		   CLEARBIT(PORTC,BIT(4));                    
+           SETBIT(PORTC,BIT(5));_delay_ms(1.25);      //75 deg position  
+		   CLEARBIT(PORTC,BIT(5));
+           SETBIT(PORTC,BIT(6));_delay_ms(1.00);
+		   CLEARBIT(PORTC,BIT(6));
+		   SETBIT(PORTC,BIT(7));_delay_ms(1.25);
+		   CLEARBIT(PORTC,BIT(7));
+            _delay_ms(11.00);
+            }
+		   
+           
+		   r++;
+
+		   }
+
+          
+
+		   while(k<2)             /*TO BE DETERMINED EXPERIMENTALLY while
+		                           loop stops when 02 legs get down to 75
+								   deg pos & 13 legs to 30 deg pos on ground*/
+		   
+		    
+		     {
+			 SETBIT(PORTC,BIT(0));_delay_ms(0.75);
+			 CLEARBIT(PORTC,BIT(0));
+			 SETBIT(PORTC,BIT(1));_delay_ms(0.75);
+			 CLEARBIT(PORTC,BIT(1));
+			 SETBIT(PORTC,BIT(2));_delay_ms(0.75);
+			 CLEARBIT(PORTC,BIT(2));
+			 SETBIT(PORTC,BIT(3));_delay_ms(0.75);
+			 CLEARBIT(PORTC,BIT(3));
+              
+		   if(((CHECKBIT(PINA,BIT(5)))>0))             //RIGHT 
+		  {
+		   move_right();
+		   }
+		  
+		  else if(((CHECKBIT(PINA,BIT(7)))>0))  //front
+
+		   {
+		   move_front();
+		   }
+		  
+		   else if(((CHECKBIT(PINA,BIT(4)))>0))  //left
+
+		   {
+		   move_left();
+		   }
+
+           else
+		   {
+		   SETBIT(PORTC,BIT(4));_delay_ms(1.00);      //30 deg position
+		   CLEARBIT(PORTC,BIT(4));                    
+           SETBIT(PORTC,BIT(5));_delay_ms(1.25);      //75 deg position  
+		   CLEARBIT(PORTC,BIT(5));
+           SETBIT(PORTC,BIT(6));_delay_ms(1.00);
+		   CLEARBIT(PORTC,BIT(6));
+		   SETBIT(PORTC,BIT(7));_delay_ms(1.25);
+		   CLEARBIT(PORTC,BIT(7));
+            _delay_ms(12.50);
+            }
+		   
+
+		  
+			 k++;
+			 }
+	
+	         
+            	
+			
+			
+				  
+
+
+		  
+         int upperlimit_=3;                   
+		                                              
+		int r_=0;
+		int k_=0;										  
+		    
+			  
+		 while(r_<upperlimit_)         /*TO BE DETERMINED EXPERIMENTALLY while 
+		                          loop stops when 13 legs stand in air 
+								  in 75 deg pos & 02 legs keep pushin 
+								  ground from 75 deg till 30 deg pos*/
+		   {  
+		   
+		   
+		   SETBIT(PORTC,BIT(0));_delay_ms(0.75);   //0 deg pos
+		   CLEARBIT(PORTC,BIT(0));
+		   SETBIT(PORTC,BIT(1));_delay_ms(1.50);    //90 deg pos
+		   CLEARBIT(PORTC,BIT(1));
+		   SETBIT(PORTC,BIT(2));_delay_ms(0.75);
+		   CLEARBIT(PORTC,BIT(2));
+		   SETBIT(PORTC,BIT(3));_delay_ms(1.50);
+		   CLEARBIT(PORTC,BIT(3));
+
+         if(((CHECKBIT(PINA,BIT(5)))>0))     //right
+           {
+		   move_right();
+		   }
+		  
+		  else if(((CHECKBIT(PINA,BIT(7)))>0))  //front
+
+		   {
+		   move_front();
+		   }
+		  
+		   else if(((CHECKBIT(PINA,BIT(4)))>0))  //left
+
+		   {
+		   move_left();
+		   }
+            else                                           //back
+			{
+		   SETBIT(PORTC,BIT(4));_delay_ms(1.25);      //75 deg position
+		   CLEARBIT(PORTC,BIT(4));                    
+           SETBIT(PORTC,BIT(5));_delay_ms(1.00);      //30 deg position  
+		   CLEARBIT(PORTC,BIT(5));
+           SETBIT(PORTC,BIT(6));_delay_ms(1.25);
+		   CLEARBIT(PORTC,BIT(6));
+		   SETBIT(PORTC,BIT(7));_delay_ms(1.00);
+		   CLEARBIT(PORTC,BIT(7));
+           _delay_ms(11.00);
+             } 
+		  
+          
+		   r_++;
+		   }
+
+          
+
+		   while(k_<2)             /*TO BE DETERMINED EXPERIMENTALLY while
+		                           loop stops when 13 legs get down to 75
+								   deg pos & 02 legs to 30 deg pos on ground*/
+		   
+		     {
+			 SETBIT(PORTC,BIT(0));_delay_ms(0.75);
+			 CLEARBIT(PORTC,BIT(0));
+			 SETBIT(PORTC,BIT(1));_delay_ms(0.75);
+			 CLEARBIT(PORTC,BIT(1));
+			 SETBIT(PORTC,BIT(2));_delay_ms(0.75);
+			 CLEARBIT(PORTC,BIT(2));
+			 SETBIT(PORTC,BIT(3));_delay_ms(0.75);
+			 CLEARBIT(PORTC,BIT(3));
+
+			  if(((CHECKBIT(PINA,BIT(5)))>0))     //right
+           {
+		   move_right();
+		   }
+		  
+		  else if(((CHECKBIT(PINA,BIT(7)))>0))  //front
+
+		   {
+		   move_front();
+		   }
+		  
+		   else if(((CHECKBIT(PINA,BIT(4)))>0))  //left
+
+		   {
+		   move_left();
+		   }
+
+		    else                                       //back
+			{
+		   SETBIT(PORTC,BIT(4));_delay_ms(1.00);      //75 deg position
+		   CLEARBIT(PORTC,BIT(4));                    
+           SETBIT(PORTC,BIT(5));_delay_ms(1.25);      //30 deg position  
+		   CLEARBIT(PORTC,BIT(5));
+           SETBIT(PORTC,BIT(6));_delay_ms(1.00);
+		   CLEARBIT(PORTC,BIT(6));
+		   SETBIT(PORTC,BIT(7));_delay_ms(1.25);
+		   CLEARBIT(PORTC,BIT(7));
+           _delay_ms(12.50);
+             } 
+		  
+          
+			 k_++;
+			 }
+	
+	         return;
+            }	
+		
+        void move_right()
+		 {
+		
+		 int k=0;
+         int upperlimit=30;
+		  
+		 /*upperlimit=time for legs to take that position/20ms
+		                                              
+		
+		 */   
+	      int r=0;
+		 while(r<upperlimit)    /*TO BE DETERMINED EXPERIMENTALLY while 
+		                          loop stops when 02 legs stand in air 
+								  in 75 deg pos & 13 legs keep pushin 
+								  ground from 75 deg till 30 deg pos*/
+		   {
+		   
+		   SETBIT(PORTC,BIT(0));_delay_ms(1.50);
+		   CLEARBIT(PORTC,BIT(0));
+		   SETBIT(PORTC,BIT(1));_delay_ms(0.15);
+		   CLEARBIT(PORTC,BIT(1));
+		   SETBIT(PORTC,BIT(2));_delay_ms(1.65);
+		   CLEARBIT(PORTC,BIT(2));
+		   SETBIT(PORTC,BIT(3));_delay_ms(3.0);
+		   CLEARBIT(PORTC,BIT(3));
+
+		   if(((CHECKBIT(PINA,BIT(7)))>0))     //front
+           {
+		   move_front();
+		   }
+		  
+		  else if(((CHECKBIT(PINA,BIT(6)))>0))  //back
+
+		   {
+		   move_back();
+		   }
+		  
+		   else if(((CHECKBIT(PINA,BIT(4)))>0))  //left
+
+		   {
+		   move_left();
+		   }
+
+           else                                       //right
+		   {
+		   SETBIT(PORTC,BIT(4));_delay_ms(1.527);      //30 deg position
+		   CLEARBIT(PORTC,BIT(4));                    
+           SETBIT(PORTC,BIT(5));_delay_ms(2.88);      //30 deg position  
+		   CLEARBIT(PORTC,BIT(5));
+           SETBIT(PORTC,BIT(6));_delay_ms(1.68);
+		   CLEARBIT(PORTC,BIT(6));
+		   SETBIT(PORTC,BIT(7));_delay_ms(0.50);
+		   CLEARBIT(PORTC,BIT(7));
+            _delay_ms(7.11);
+            }
+		   
+           
+		   r++;
+
+		   }
+
+          
+
+		   while(k<10)             /*TO BE DETERMINED EXPERIMENTALLY while
+		                           loop stops when 02 legs get down to 75
+								   deg pos & 13 legs to 30 deg pos on ground*/
+		   
+		    
+		     {
+			 SETBIT(PORTC,BIT(0));_delay_ms(3.0);
+			 CLEARBIT(PORTC,BIT(0));
+			 SETBIT(PORTC,BIT(1));_delay_ms(0.15);
+			 CLEARBIT(PORTC,BIT(1));
+			 SETBIT(PORTC,BIT(2));_delay_ms(0.65);
+			 CLEARBIT(PORTC,BIT(2));
+			 SETBIT(PORTC,BIT(3));_delay_ms(3.0);
+			 CLEARBIT(PORTC,BIT(3));
+              
+		   if(((CHECKBIT(PINA,BIT(7)))>0))             //front 
+		  {
+		   move_front();
+		   }
+		  
+		  else if(((CHECKBIT(PINA,BIT(6)))>0))  //back
+
+		   {
+		   move_back();
+		   }
+		  
+		   else if(((CHECKBIT(PINA,BIT(4)))>0))  //left
+
+		   {
+		   move_left();
+		   }
+
+           else                                      //right
+		   {
+		   SETBIT(PORTC,BIT(4));_delay_ms(0.15);      //30 deg position
+		   CLEARBIT(PORTC,BIT(4));                    
+           SETBIT(PORTC,BIT(5));_delay_ms(2.88);      //30 deg position  
+		   CLEARBIT(PORTC,BIT(5));
+           SETBIT(PORTC,BIT(6));_delay_ms(1.70);
+		   CLEARBIT(PORTC,BIT(6));
+		   SETBIT(PORTC,BIT(7));_delay_ms(0.5);
+		   CLEARBIT(PORTC,BIT(7));
+            _delay_ms(7.97);
+            }
+		   
+
+		  
+			 k++;
+			 }
+	
+	         
+            	
+			
+			
+				  
+
+
+		  
+         int upperlimit_=35;                   
+		                                              
+		int r_=0;
+		int k_=0;										  
+		    
+			  
+		 while(r_<upperlimit_)         /*TO BE DETERMINED EXPERIMENTALLY while 
+		                          loop stops when 13 legs stand in air 
+								  in 75 deg pos & 02 legs keep pushin 
+								  ground from 75 deg till 30 deg pos*/
+		   {  
+		   
+		   
+		   SETBIT(PORTC,BIT(0));_delay_ms(3.0);   //0 deg pos
+		   CLEARBIT(PORTC,BIT(0));
+		   SETBIT(PORTC,BIT(1));_delay_ms(1.50);    //90 deg pos
+		   CLEARBIT(PORTC,BIT(1));
+		   SETBIT(PORTC,BIT(2));_delay_ms(0.65);
+		   CLEARBIT(PORTC,BIT(2));
+		   SETBIT(PORTC,BIT(3));_delay_ms(1.50);
+		   CLEARBIT(PORTC,BIT(3));
+
+         if(((CHECKBIT(PINA,BIT(7)))>0))     //front
+           {
+		   move_front();
+		   }
+		  
+		  else if(((CHECKBIT(PINA,BIT(6)))>0))  //back
+
+		   {
+		   move_back();
+		   }
+		  
+		   else if(((CHECKBIT(PINA,BIT(4)))>0))  //left
+
+		   {
+		   move_left();
+		   }
+            else                                           //right
+			{
+		   SETBIT(PORTC,BIT(4));_delay_ms(2.5);      //75 deg position
+		   CLEARBIT(PORTC,BIT(4));                    
+           SETBIT(PORTC,BIT(5));_delay_ms(1.0);      //75 deg position  
+		   CLEARBIT(PORTC,BIT(5));
+           SETBIT(PORTC,BIT(6));_delay_ms(0.15);
+		   CLEARBIT(PORTC,BIT(6));
+		   SETBIT(PORTC,BIT(7));_delay_ms(1.45);
+		   CLEARBIT(PORTC,BIT(7));
+           _delay_ms(8.25);
+             } 
+		  
+          
+		   r_++;
+		   }
+
+          
+
+		   while(k_<15)             /*TO BE DETERMINED EXPERIMENTALLY while
+		                           loop stops when 13 legs get down to 75
+								   deg pos & 02 legs to 30 deg pos on ground*/
+		   
+		     {
+			 SETBIT(PORTC,BIT(0));_delay_ms(3.0);
+			 CLEARBIT(PORTC,BIT(0));
+			 SETBIT(PORTC,BIT(1));_delay_ms(0.15);
+			 CLEARBIT(PORTC,BIT(1));
+			 SETBIT(PORTC,BIT(2));_delay_ms(0.65);
+			 CLEARBIT(PORTC,BIT(2));
+			 SETBIT(PORTC,BIT(3));_delay_ms(3.0);
+			 CLEARBIT(PORTC,BIT(3));
+
+			  if(((CHECKBIT(PINA,BIT(7)))>0))     //front
+           {
+		   move_front();
+		   }
+		  
+		  else if(((CHECKBIT(PINA,BIT(6)))>0))  //back
+
+		   {
+		   move_back();
+		   }
+		  
+		   else if(((CHECKBIT(PINA,BIT(4)))>0))  //left
+
+		   {
+		   move_left();
+		   }
+
+		    else                                       //right
+			{
+		                 
+           SETBIT(PORTC,BIT(5));_delay_ms(1.42);      //75 deg position  
+		   CLEARBIT(PORTC,BIT(5));
+          
+		   SETBIT(PORTC,BIT(7));_delay_ms(2.85);
+		   CLEARBIT(PORTC,BIT(7));
+           _delay_ms(10.93);
+             } 
+		  
+          
+			 k_++;
+			 }
+	
+	         return;
+            }	
+
+
+
+void move_left()
+		 {
+		
+		 int k=0;
+         int upperlimit=3;
+		  
+		 /*upperlimit=time for legs to take that position/20ms
+		                                              
+		
+		 */   
+	      int r=0;
+		 while(r<upperlimit)    /*TO BE DETERMINED EXPERIMENTALLY while 
+		                          loop stops when 02 legs stand in air 
+								  in 75 deg pos & 13 legs keep pushin 
+								  ground from 75 deg till 30 deg pos*/
+		   {
+		   
+		   SETBIT(PORTC,BIT(0));_delay_ms(1.50);
+		   CLEARBIT(PORTC,BIT(0));
+		   SETBIT(PORTC,BIT(1));_delay_ms(0.75);
+		   CLEARBIT(PORTC,BIT(1));
+		   SETBIT(PORTC,BIT(2));_delay_ms(1.50);
+		   CLEARBIT(PORTC,BIT(2));
+		   SETBIT(PORTC,BIT(3));_delay_ms(0.75);
+		   CLEARBIT(PORTC,BIT(3));
+
+		   if(((CHECKBIT(PINA,BIT(5)))>0))     //right
+           {
+		   move_right();
+		   }
+		  
+		  else if(((CHECKBIT(PINA,BIT(6)))>0))  //back
+
+		   {
+		   move_back();
+		   }
+		  
+		   else if(((CHECKBIT(PINA,BIT(7)))>0))  //front
+
+		   {
+		   move_front();
+		   }
+
+           else                                       //left
+		   {
+		   SETBIT(PORTC,BIT(4));_delay_ms(1.25);      //75 deg position
+		   CLEARBIT(PORTC,BIT(4));                    
+           SETBIT(PORTC,BIT(5));_delay_ms(1.00);      //75 deg position  
+		   CLEARBIT(PORTC,BIT(5));
+           SETBIT(PORTC,BIT(6));_delay_ms(1.25);
+		   CLEARBIT(PORTC,BIT(6));
+		   SETBIT(PORTC,BIT(7));_delay_ms(1.00);
+		   CLEARBIT(PORTC,BIT(7));
+            _delay_ms(11.00);
+            }
+		   
+           
+		   r++;
+
+		   }
+
+          
+
+		   while(k<2)             /*TO BE DETERMINED EXPERIMENTALLY while
+		                           loop stops when 02 legs get down to 75
+								   deg pos & 13 legs to 30 deg pos on ground*/
+		   
+		    
+		     {
+			 SETBIT(PORTC,BIT(0));_delay_ms(0.75);
+			 CLEARBIT(PORTC,BIT(0));
+			 SETBIT(PORTC,BIT(1));_delay_ms(0.75);
+			 CLEARBIT(PORTC,BIT(1));
+			 SETBIT(PORTC,BIT(2));_delay_ms(0.75);
+			 CLEARBIT(PORTC,BIT(2));
+			 SETBIT(PORTC,BIT(3));_delay_ms(0.75);
+			 CLEARBIT(PORTC,BIT(3));
+              
+		   if(((CHECKBIT(PINA,BIT(5)))>0))             //RIGHT 
+		  {
+		   move_right();
+		   }
+		  
+		  else if(((CHECKBIT(PINA,BIT(6)))>0))  //back
+
+		   {
+		   move_back();
+		   }
+		  
+		   else if(((CHECKBIT(PINA,BIT(7)))>0))  //front
+
+		   {
+		   move_front();
+		   }
+
+           else
+		   {
+		   SETBIT(PORTC,BIT(4));_delay_ms(1.25);      //75 deg position
+		   CLEARBIT(PORTC,BIT(4));                    
+           SETBIT(PORTC,BIT(5));_delay_ms(1.00);      //75 deg position  
+		   CLEARBIT(PORTC,BIT(5));
+           SETBIT(PORTC,BIT(6));_delay_ms(1.25);
+		   CLEARBIT(PORTC,BIT(6));
+		   SETBIT(PORTC,BIT(7));_delay_ms(1.00);
+		   CLEARBIT(PORTC,BIT(7));
+            _delay_ms(12.50);
+            }
+		   
+
+		  
+			 k++;
+			 }
+	
+	         
+            	
+			
+			
+				  
+
+
+		  
+         int upperlimit_=3;                   
+		                                              
+		int r_=0;
+		int k_=0;										  
+		    
+			  
+		 while(r_<upperlimit_)         /*TO BE DETERMINED EXPERIMENTALLY while 
+		                          loop stops when 13 legs stand in air 
+								  in 75 deg pos & 02 legs keep pushin 
+								  ground from 75 deg till 30 deg pos*/
+		   {  
+		   
+		   
+		   SETBIT(PORTC,BIT(0));_delay_ms(0.75);   //0 deg pos
+		   CLEARBIT(PORTC,BIT(0));
+		   SETBIT(PORTC,BIT(1));_delay_ms(1.50);    //90 deg pos
+		   CLEARBIT(PORTC,BIT(1));
+		   SETBIT(PORTC,BIT(2));_delay_ms(0.75);
+		   CLEARBIT(PORTC,BIT(2));
+		   SETBIT(PORTC,BIT(3));_delay_ms(1.50);
+		   CLEARBIT(PORTC,BIT(3));
+
+         if(((CHECKBIT(PINA,BIT(5)))>0))     //right
+           {
+		   move_right();
+		   }
+		  
+		  else if(((CHECKBIT(PINA,BIT(6)))>0))  //back
+
+		   {
+		   move_back();
+		   }
+		  
+		   else if(((CHECKBIT(PINA,BIT(7)))>0))  //front
+
+		   {
+		   move_front();
+		   }
+            else                                           //left
+			{
+		   SETBIT(PORTC,BIT(4));_delay_ms(1.00);      //30 deg position
+		   CLEARBIT(PORTC,BIT(4));                    
+           SETBIT(PORTC,BIT(5));_delay_ms(1.25);      //30 deg position  
+		   CLEARBIT(PORTC,BIT(5));
+           SETBIT(PORTC,BIT(6));_delay_ms(1.00);
+		   CLEARBIT(PORTC,BIT(6));
+		   SETBIT(PORTC,BIT(7));_delay_ms(1.25);
+		   CLEARBIT(PORTC,BIT(7));
+           _delay_ms(11.00);
+             } 
+		  
+          
+		   r_++;
+		   }
+
+          
+
+		   while(k_<2)             /*TO BE DETERMINED EXPERIMENTALLY while
+		                           loop stops when 13 legs get down to 75
+								   deg pos & 02 legs to 30 deg pos on ground*/
+		   
+		     {
+			 SETBIT(PORTC,BIT(0));_delay_ms(0.75);
+			 CLEARBIT(PORTC,BIT(0));
+			 SETBIT(PORTC,BIT(1));_delay_ms(0.75);
+			 CLEARBIT(PORTC,BIT(1));
+			 SETBIT(PORTC,BIT(2));_delay_ms(0.75);
+			 CLEARBIT(PORTC,BIT(2));
+			 SETBIT(PORTC,BIT(3));_delay_ms(0.75);
+			 CLEARBIT(PORTC,BIT(3));
+
+
+			  if(((CHECKBIT(PINA,BIT(5)))>0))     //right
+           {
+		   move_right();
+		   }
+		  
+		  else if(((CHECKBIT(PINA,BIT(6)))>0))  //back
+
+		   {
+		   move_back();
+		   }
+		  
+		   else if(((CHECKBIT(PINA,BIT(7)))>0))  //front
+
+		   {
+		   move_front();
+		   }
+
+		    else                                       //left
+			{
+		   SETBIT(PORTC,BIT(4));_delay_ms(1.00);      //30 deg position
+		   CLEARBIT(PORTC,BIT(4));                    
+           SETBIT(PORTC,BIT(5));_delay_ms(1.25);      //30 deg position  
+		   CLEARBIT(PORTC,BIT(5));
+           SETBIT(PORTC,BIT(6));_delay_ms(1.00);
+		   CLEARBIT(PORTC,BIT(6));
+		   SETBIT(PORTC,BIT(7));_delay_ms(1.25);
+		   CLEARBIT(PORTC,BIT(7));
+           _delay_ms(12.50);
+             } 
+		  
+          
+			 k_++;
+			 }
+	
+	         return;
+            }	
+
+
+

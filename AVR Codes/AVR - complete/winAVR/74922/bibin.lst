@@ -1,0 +1,120 @@
+   1               		.file	"bibin.c"
+   2               		.arch atmega32
+   3               	__SREG__ = 0x3f
+   4               	__SP_H__ = 0x3e
+   5               	__SP_L__ = 0x3d
+   6               	__tmp_reg__ = 0
+   7               	__zero_reg__ = 1
+   8               		.global __do_copy_data
+   9               		.global __do_clear_bss
+  11               		.text
+  12               	.Ltext0:
+  74               	.global	Init_Ports
+  76               	Init_Ports:
+   1:bibin.c       **** /*----------------------------------------------------------------
+   2:bibin.c       **** -----------------HEADER FILES-------------------------------------
+   3:bibin.c       **** -----------------------------------------------------------------*/
+   4:bibin.c       **** #include<avr/io.h>
+   5:bibin.c       **** 
+   6:bibin.c       **** 
+   7:bibin.c       **** /*----------------------------------------------------------------
+   8:bibin.c       **** -------------CONNECTION BETWEEN 74922 AND ATMEGA32---------------
+   9:bibin.c       **** -----------------------------------------------------------------*/
+  10:bibin.c       **** #define IC_DDR	     DDRC
+  11:bibin.c       **** #define IC_PORT 	 PORTC
+  12:bibin.c       **** #define IC_PIN 		 PINC
+  13:bibin.c       **** #define Pin_A         0
+  14:bibin.c       **** #define Pin_B		  1
+  15:bibin.c       **** #define Pin_C         2
+  16:bibin.c       **** #define Pin_D		  3
+  17:bibin.c       **** #define Pin_DA        4
+  18:bibin.c       **** #define Pin_OE		  5
+  19:bibin.c       **** #define IC_Mask  	 0x10 //OE for output remaining for input
+  20:bibin.c       **** #define Output_DDR    DDRD
+  21:bibin.c       **** #define Output_PORT   PORTD
+  22:bibin.c       **** 
+  23:bibin.c       **** #define Output_Enable IC_PORT&=~_BV(Pin_OE) //for enabling the IC
+  24:bibin.c       **** 
+  25:bibin.c       **** 
+  26:bibin.c       **** /*----------------------------------------------------------------
+  27:bibin.c       **** -----------------FUNCTIONS---------------------------------------
+  28:bibin.c       **** -----------------------------------------------------------------*/
+  29:bibin.c       **** void Init_Ports(void);
+  30:bibin.c       **** 
+  31:bibin.c       **** void main()
+  32:bibin.c       **** {
+  33:bibin.c       **** Init_Ports();
+  34:bibin.c       **** Output_Enable;
+  35:bibin.c       **** do
+  36:bibin.c       **** {
+  37:bibin.c       **** Output_PORT=IC_PIN&0X0F;
+  38:bibin.c       **** }
+  39:bibin.c       **** while(1);
+  40:bibin.c       **** }
+  41:bibin.c       **** 
+  42:bibin.c       **** 
+  43:bibin.c       **** 
+  44:bibin.c       **** /*----------------------------------------------------------------
+  45:bibin.c       **** -----------------FUNCTIONS TO INITIALIZE PORTS--------------------
+  46:bibin.c       **** -----------------------------------------------------------------*/
+  47:bibin.c       **** void Init_Ports(void)
+  48:bibin.c       **** {
+  78               	.LM1:
+  79               	/* prologue: frame size=0 */
+  80               	/* prologue end (size=0) */
+  49:bibin.c       **** IC_DDR=IC_Mask; //setting OE pins for output,remaining for input
+  82               	.LM2:
+  83 0000 80E1      		ldi r24,lo8(16)
+  84 0002 84BB      		out 52-0x20,r24
+  50:bibin.c       **** Output_DDR=0XFF;
+  86               	.LM3:
+  87 0004 8FEF      		ldi r24,lo8(-1)
+  88 0006 81BB      		out 49-0x20,r24
+  89               	/* epilogue: frame size=0 */
+  90 0008 0895      		ret
+  91               	/* epilogue end (size=1) */
+  92               	/* function Init_Ports size 5 (4) */
+  94               	.Lscope0:
+  96               	.global	main
+  98               	main:
+ 100               	.LM4:
+ 101               	/* prologue: frame size=0 */
+ 102 000a C0E0      		ldi r28,lo8(__stack - 0)
+ 103 000c D0E0      		ldi r29,hi8(__stack - 0)
+ 104 000e DEBF      		out __SP_H__,r29
+ 105 0010 CDBF      		out __SP_L__,r28
+ 106               	/* prologue end (size=4) */
+ 108               	.LM5:
+ 109 0012 0E94 0000 		call Init_Ports
+ 111               	.LM6:
+ 112 0016 AD98      		cbi 53-0x20,5
+ 113               	.L3:
+ 115               	.LM7:
+ 116 0018 83B3      		in r24,51-0x20
+ 117 001a 8F70      		andi r24,lo8(15)
+ 118 001c 82BB      		out 50-0x20,r24
+ 120               	.LM8:
+ 121 001e FCCF      		rjmp .L3
+ 122               	/* epilogue: frame size=0 */
+ 123               	/* epilogue: noreturn */
+ 124               	/* epilogue end (size=0) */
+ 125               	/* function main size 11 (7) */
+ 127               	.Lscope1:
+ 128               		.text
+ 130               	Letext:
+ 131               	/* File "bibin.c": code   16 = 0x0010 (  11), prologues   4, epilogues   1 */
+DEFINED SYMBOLS
+                            *ABS*:00000000 bibin.c
+D:\DOCUME~1\ADMINI~1\LOCALS~1\Temp/ccoxaaaa.s:3      *ABS*:0000003f __SREG__
+D:\DOCUME~1\ADMINI~1\LOCALS~1\Temp/ccoxaaaa.s:4      *ABS*:0000003e __SP_H__
+D:\DOCUME~1\ADMINI~1\LOCALS~1\Temp/ccoxaaaa.s:5      *ABS*:0000003d __SP_L__
+D:\DOCUME~1\ADMINI~1\LOCALS~1\Temp/ccoxaaaa.s:6      *ABS*:00000000 __tmp_reg__
+D:\DOCUME~1\ADMINI~1\LOCALS~1\Temp/ccoxaaaa.s:7      *ABS*:00000001 __zero_reg__
+D:\DOCUME~1\ADMINI~1\LOCALS~1\Temp/ccoxaaaa.s:76     .text:00000000 Init_Ports
+D:\DOCUME~1\ADMINI~1\LOCALS~1\Temp/ccoxaaaa.s:98     .text:0000000a main
+D:\DOCUME~1\ADMINI~1\LOCALS~1\Temp/ccoxaaaa.s:130    .text:00000020 Letext
+
+UNDEFINED SYMBOLS
+__do_copy_data
+__do_clear_bss
+__stack

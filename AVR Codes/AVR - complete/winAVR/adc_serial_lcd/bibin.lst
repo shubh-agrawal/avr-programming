@@ -1,0 +1,710 @@
+   1               		.file	"bibin.c"
+   2               		.arch atmega32
+   3               	__SREG__ = 0x3f
+   4               	__SP_H__ = 0x3e
+   5               	__SP_L__ = 0x3d
+   6               	__tmp_reg__ = 0
+   7               	__zero_reg__ = 1
+   8               		.global __do_copy_data
+   9               		.global __do_clear_bss
+  11               		.text
+  12               	.Ltext0:
+  77               	.global	delay_ms
+  79               	delay_ms:
+  81               	.Ltext1:
+   1:lcd.c         **** /*----------------------------------------------------------------
+   2:lcd.c         **** -----------------HEADER FILES-------------------------------------
+   3:lcd.c         **** -----------------------------------------------------------------*/
+   4:lcd.c         **** #include<avr/io.h>
+   5:lcd.c         **** 
+   6:lcd.c         **** 
+   7:lcd.c         **** /*----------------------------------------------------------------
+   8:lcd.c         **** -------------CONNECTION BETWEEN LCD AND ATMEGA32-----------------
+   9:lcd.c         **** -----------------------------------------------------------------*/
+  10:lcd.c         **** #define DATA_DDR	 DDRC
+  11:lcd.c         **** #define DATA_PORT 	 PORTC
+  12:lcd.c         **** 
+  13:lcd.c         **** 
+  14:lcd.c         **** #define CONTROL_DDR	 	 DDRD
+  15:lcd.c         **** #define CONTROL_PORT 	 PORTD
+  16:lcd.c         **** #define Enable_Pin		  6
+  17:lcd.c         **** #define RegSelect_Pin     4
+  18:lcd.c         **** #define ReadWrite_Pin     5
+  19:lcd.c         **** #define CONTROL_MASK     0X70
+  20:lcd.c         **** 
+  21:lcd.c         **** 
+  22:lcd.c         **** /*----------------------------------------------------------------
+  23:lcd.c         **** -------------CONTROL BITS OF LCD --------------------------------
+  24:lcd.c         **** -----------------------------------------------------------------*/
+  25:lcd.c         **** 
+  26:lcd.c         **** #define Set_Enable  				CONTROL_PORT|=_BV(Enable_Pin)
+  27:lcd.c         **** #define Clear_Enable 				CONTROL_PORT&=~_BV(Enable_Pin)
+  28:lcd.c         **** #define Write_Lcd			    	CONTROL_PORT&=~_BV(ReadWrite_Pin)
+  29:lcd.c         **** #define Read_Lcd			   		CONTROL_PORT|=_BV(ReadWrite_Pin)
+  30:lcd.c         **** #define Select_InstructionRegister 	CONTROL_PORT&=~_BV(RegSelect_Pin)
+  31:lcd.c         **** #define Select_DataRegister	    	CONTROL_PORT|=_BV(RegSelect_Pin)
+  32:lcd.c         **** #define Data_Lcd(a)					DATA_PORT=a
+  33:lcd.c         **** #define delay(a)					delay_ms(a)
+  34:lcd.c         **** 
+  35:lcd.c         **** 
+  36:lcd.c         **** 
+  37:lcd.c         **** /*----------------------------------------------------------------
+  38:lcd.c         **** -----------------FUNCTIONS---------------------------------------
+  39:lcd.c         **** -----------------------------------------------------------------*/
+  40:lcd.c         **** void Init_Ports(void);
+  41:lcd.c         **** void Init_Lcd(void);
+  42:lcd.c         **** void delay_ms(unsigned char time_ms);
+  43:lcd.c         **** void Lcd_Send(unsigned char a);
+  44:lcd.c         **** 
+  45:lcd.c         **** 
+  46:lcd.c         **** 
+  47:lcd.c         **** 
+  48:lcd.c         **** 
+  49:lcd.c         **** /*----------------------------------------------------------------
+  50:lcd.c         **** -----------------SEND A CHARACTER TO LCD-------------------------
+  51:lcd.c         **** -----------------------------------------------------------------*/
+  52:lcd.c         **** void Lcd_Send(unsigned char a)
+  53:lcd.c         **** {
+  54:lcd.c         **** Select_DataRegister;
+  55:lcd.c         **** Write_Lcd;
+  56:lcd.c         **** Data_Lcd(a);
+  57:lcd.c         **** Set_Enable;
+  58:lcd.c         **** delay(3);
+  59:lcd.c         **** Clear_Enable;
+  60:lcd.c         **** delay(3);
+  61:lcd.c         **** }
+  62:lcd.c         **** 
+  63:lcd.c         ****  	
+  64:lcd.c         **** 	
+  65:lcd.c         **** 
+  66:lcd.c         **** 
+  67:lcd.c         **** 
+  68:lcd.c         **** /*----------------------------------------------------------------
+  69:lcd.c         **** -----------------FUNCTIONS TO INITIALIZE PORTS--------------------
+  70:lcd.c         **** -----------------------------------------------------------------*/
+  71:lcd.c         **** void Init_Ports(void)
+  72:lcd.c         **** {
+  73:lcd.c         **** DATA_DDR=0XFF; //Setting data port for output
+  74:lcd.c         **** CONTROL_DDR=CONTROL_MASK;//setting selected pins of control port for output
+  75:lcd.c         **** CONTROL_PORT&=~(_BV(Enable_Pin)|_BV(RegSelect_Pin )|_BV(ReadWrite_Pin)); //setting values to 0 at s
+  76:lcd.c         **** }
+  77:lcd.c         **** 
+  78:lcd.c         **** 
+  79:lcd.c         **** 
+  80:lcd.c         **** 
+  81:lcd.c         **** /*----------------------------------------------------------------
+  82:lcd.c         **** ------------FUNCTION TO INITIATE LCD -----------------------------
+  83:lcd.c         **** -----------------------------------------------------------------*/
+  84:lcd.c         **** void Init_Lcd(void)
+  85:lcd.c         **** {
+  86:lcd.c         **** char init[10];
+  87:lcd.c         ****  int i;
+  88:lcd.c         ****  init[0] = 0x01; 
+  89:lcd.c         ****  init[1] = 0x38;
+  90:lcd.c         ****  init[2] = 0x0c;
+  91:lcd.c         ****  init[3] = 0x06;
+  92:lcd.c         ****  init[4] = 0x80;
+  93:lcd.c         **** Select_InstructionRegister;
+  94:lcd.c         **** Write_Lcd;
+  95:lcd.c         **** 	for(i=0;i<5;i++)
+  96:lcd.c         **** 	{
+  97:lcd.c         **** 	Data_Lcd(init[i]);
+  98:lcd.c         **** 	Set_Enable;
+  99:lcd.c         **** 	delay(3);
+ 100:lcd.c         **** 	Clear_Enable;
+ 101:lcd.c         **** 	delay(3);
+ 102:lcd.c         **** 	}
+ 103:lcd.c         **** }
+ 104:lcd.c         **** 
+ 105:lcd.c         **** 
+ 106:lcd.c         **** 
+ 107:lcd.c         **** 
+ 108:lcd.c         **** /*----------------------------------------------------------------
+ 109:lcd.c         **** --------FUNCTION TO GENERATE DELAY IN MILLISECONDS----------------
+ 110:lcd.c         **** -----------------------------------------------------------------*/
+ 111:lcd.c         **** void delay_ms(unsigned char time_ms)
+ 112:lcd.c         **** {
+  83               	.LM1:
+  84               	/* prologue: frame size=0 */
+  85               	/* prologue end (size=0) */
+ 113:lcd.c         **** 	unsigned short delay_count = F_CPU / 400;
+  87               	.LM2:
+  88 0000 24EC      		ldi r18,lo8(2500)
+  89 0002 39E0      		ldi r19,hi8(2500)
+ 114:lcd.c         **** 
+ 115:lcd.c         **** 	unsigned short cnt;
+ 116:lcd.c         **** 	asm volatile ("\n"
+  91               	.LM3:
+  92               	/* #APP */
+  93               		
+  94               	L_dl17:
+  95 0004 E22F      		mov r30, r18
+  96 0006 F32F      		mov r31, r19
+  97               	L_dl27:
+  98 0008 3197      		sbiw r30, 1
+  99 000a F1F7      		brne L_dl27
+ 100 000c 8A95      		dec r24
+ 101 000e D1F7      		brne L_dl17
+ 102               		
+ 103               	/* #NOAPP */
+ 104               	/* epilogue: frame size=0 */
+ 105 0010 0895      		ret
+ 106               	/* epilogue end (size=1) */
+ 107               	/* function delay_ms size 23 (22) */
+ 113               	.Lscope0:
+ 116               	.global	Lcd_Send
+ 118               	Lcd_Send:
+ 120               	.LM4:
+ 121               	/* prologue: frame size=0 */
+ 122               	/* prologue end (size=0) */
+ 124               	.LM5:
+ 125 0012 949A      		sbi 50-0x20,4
+ 127               	.LM6:
+ 128 0014 9598      		cbi 50-0x20,5
+ 130               	.LM7:
+ 131 0016 85BB      		out 53-0x20,r24
+ 133               	.LM8:
+ 134 0018 969A      		sbi 50-0x20,6
+ 136               	.LM9:
+ 137 001a 83E0      		ldi r24,lo8(3)
+ 138 001c 0E94 0000 		call delay_ms
+ 140               	.LM10:
+ 141 0020 9698      		cbi 50-0x20,6
+ 143               	.LM11:
+ 144 0022 83E0      		ldi r24,lo8(3)
+ 145 0024 0E94 0000 		call delay_ms
+ 146               	/* epilogue: frame size=0 */
+ 147 0028 0895      		ret
+ 148               	/* epilogue end (size=1) */
+ 149               	/* function Lcd_Send size 12 (11) */
+ 151               	.Lscope1:
+ 153               	.global	Init_Ports
+ 155               	Init_Ports:
+ 157               	.LM12:
+ 158               	/* prologue: frame size=0 */
+ 159               	/* prologue end (size=0) */
+ 161               	.LM13:
+ 162 002a 8FEF      		ldi r24,lo8(-1)
+ 163 002c 84BB      		out 52-0x20,r24
+ 165               	.LM14:
+ 166 002e 80E7      		ldi r24,lo8(112)
+ 167 0030 81BB      		out 49-0x20,r24
+ 169               	.LM15:
+ 170 0032 82B3      		in r24,50-0x20
+ 171 0034 8F78      		andi r24,lo8(-113)
+ 172 0036 82BB      		out 50-0x20,r24
+ 173               	/* epilogue: frame size=0 */
+ 174 0038 0895      		ret
+ 175               	/* epilogue end (size=1) */
+ 176               	/* function Init_Ports size 8 (7) */
+ 178               	.Lscope2:
+ 180               	.global	Init_Lcd
+ 182               	Init_Lcd:
+ 184               	.LM16:
+ 185               	/* prologue: frame size=10 */
+ 186 003a 0F93      		push r16
+ 187 003c 1F93      		push r17
+ 188 003e CF93      		push r28
+ 189 0040 DF93      		push r29
+ 190 0042 CDB7      		in r28,__SP_L__
+ 191 0044 DEB7      		in r29,__SP_H__
+ 192 0046 2A97      		sbiw r28,10
+ 193 0048 0FB6      		in __tmp_reg__,__SREG__
+ 194 004a F894      		cli
+ 195 004c DEBF      		out __SP_H__,r29
+ 196 004e 0FBE      		out __SREG__,__tmp_reg__
+ 197 0050 CDBF      		out __SP_L__,r28
+ 198               	/* prologue end (size=12) */
+ 200               	.LM17:
+ 201 0052 81E0      		ldi r24,lo8(1)
+ 202 0054 8983      		std Y+1,r24
+ 204               	.LM18:
+ 205 0056 88E3      		ldi r24,lo8(56)
+ 206 0058 8A83      		std Y+2,r24
+ 208               	.LM19:
+ 209 005a 8CE0      		ldi r24,lo8(12)
+ 210 005c 8B83      		std Y+3,r24
+ 212               	.LM20:
+ 213 005e 86E0      		ldi r24,lo8(6)
+ 214 0060 8C83      		std Y+4,r24
+ 216               	.LM21:
+ 217 0062 80E8      		ldi r24,lo8(-128)
+ 218 0064 8D83      		std Y+5,r24
+ 220               	.LM22:
+ 221 0066 9498      		cbi 50-0x20,4
+ 223               	.LM23:
+ 224 0068 9598      		cbi 50-0x20,5
+ 226               	.LM24:
+ 227 006a 00E0      		ldi r16,lo8(0)
+ 228 006c 10E0      		ldi r17,hi8(0)
+ 229               	.L8:
+ 231               	.LM25:
+ 232 006e FE01      		movw r30,r28
+ 233 0070 E00F      		add r30,r16
+ 234 0072 F11F      		adc r31,r17
+ 235 0074 8181      		ldd r24,Z+1
+ 236 0076 85BB      		out 53-0x20,r24
+ 238               	.LM26:
+ 239 0078 969A      		sbi 50-0x20,6
+ 241               	.LM27:
+ 242 007a 83E0      		ldi r24,lo8(3)
+ 243 007c 0E94 0000 		call delay_ms
+ 245               	.LM28:
+ 246 0080 9698      		cbi 50-0x20,6
+ 248               	.LM29:
+ 249 0082 83E0      		ldi r24,lo8(3)
+ 250 0084 0E94 0000 		call delay_ms
+ 252               	.LM30:
+ 253 0088 0F5F      		subi r16,lo8(-(1))
+ 254 008a 1F4F      		sbci r17,hi8(-(1))
+ 255 008c 0530      		cpi r16,5
+ 256 008e 1105      		cpc r17,__zero_reg__
+ 257 0090 74F3      		brlt .L8
+ 258               	/* epilogue: frame size=10 */
+ 259 0092 2A96      		adiw r28,10
+ 260 0094 0FB6      		in __tmp_reg__,__SREG__
+ 261 0096 F894      		cli
+ 262 0098 DEBF      		out __SP_H__,r29
+ 263 009a 0FBE      		out __SREG__,__tmp_reg__
+ 264 009c CDBF      		out __SP_L__,r28
+ 265 009e DF91      		pop r29
+ 266 00a0 CF91      		pop r28
+ 267 00a2 1F91      		pop r17
+ 268 00a4 0F91      		pop r16
+ 269 00a6 0895      		ret
+ 270               	/* epilogue end (size=11) */
+ 271               	/* function Init_Lcd size 55 (32) */
+ 277               	.Lscope3:
+ 280               	.global	InitUART
+ 282               	InitUART:
+ 284               	.Ltext2:
+   1:serial.c      **** 
+   2:serial.c      **** 
+   3:serial.c      **** /*----------------------------------------------------------------
+   4:serial.c      **** -----------------FUNCTIONS---------------------------------------
+   5:serial.c      **** -----------------------------------------------------------------*/
+   6:serial.c      **** 
+   7:serial.c      **** void InitUART( unsigned char baudrate );
+   8:serial.c      **** unsigned char ReceiveByte( void );
+   9:serial.c      **** void TransmitByte( unsigned char data );
+  10:serial.c      **** 
+  11:serial.c      **** /*----------------------------------------------------------------
+  12:serial.c      **** -----------------MAIN FUNCTION------------------------------------
+  13:serial.c      **** -----------------------------------------------------------------*/
+  14:serial.c      ****   
+  15:serial.c      ****   
+  16:serial.c      ****   
+  17:serial.c      **** /*----------------------------------------------------------------
+  18:serial.c      **** ------------FUNCTIONS TO Initialize UART--------------------------
+  19:serial.c      **** -----------------------------------------------------------------*/
+  20:serial.c      **** 
+  21:serial.c      ****  void InitUART( unsigned char baudrate )
+  22:serial.c      ****   {
+ 286               	.LM31:
+ 287               	/* prologue: frame size=0 */
+ 288               	/* prologue end (size=0) */
+  23:serial.c      ****     UBRRL =  baudrate;                   /*  Set the baud rate */
+ 290               	.LM32:
+ 291 00a8 89B9      		out 41-0x20,r24
+  24:serial.c      ****     UCSRB = (UCSRB | _BV(RXEN) | _BV(TXEN) );  /* Enable UART   receiver and transmitter */
+ 293               	.LM33:
+ 294 00aa 8AB1      		in r24,42-0x20
+ 295 00ac 8861      		ori r24,lo8(24)
+ 296 00ae 8AB9      		out 42-0x20,r24
+ 297               	/* epilogue: frame size=0 */
+ 298 00b0 0895      		ret
+ 299               	/* epilogue end (size=1) */
+ 300               	/* function InitUART size 5 (4) */
+ 302               	.Lscope4:
+ 304               	.global	ReceiveByte
+ 306               	ReceiveByte:
+  25:serial.c      ****   }
+  26:serial.c      **** /*----------------------------------------------------------------
+  27:serial.c      **** ------------FUNCTIONS TO READ UART-------------------------------
+  28:serial.c      **** -----------------------------------------------------------------*/
+  29:serial.c      ****   unsigned char ReceiveByte( void )
+  30:serial.c      ****   {
+ 308               	.LM34:
+ 309               	/* prologue: frame size=0 */
+ 310               	/* prologue end (size=0) */
+ 311               	.L13:
+  31:serial.c      ****    while ( !(UCSRA &  (_BV(RXC))) );     /*  Wait for incomming data   */
+ 313               	.LM35:
+ 314 00b2 5F9B      		sbis 43-0x20,7
+ 315 00b4 FECF      		rjmp .L13
+  32:serial.c      ****    return UDR;/* Return the   data */
+ 317               	.LM36:
+ 318 00b6 8CB1      		in r24,44-0x20
+  33:serial.c      ****   }
+ 320               	.LM37:
+ 321 00b8 9927      		clr r25
+ 322               	/* epilogue: frame size=0 */
+ 323 00ba 0895      		ret
+ 324               	/* epilogue end (size=1) */
+ 325               	/* function ReceiveByte size 5 (4) */
+ 327               	.Lscope5:
+ 330               	.global	TransmitByte
+ 332               	TransmitByte:
+  34:serial.c      **** 
+  35:serial.c      **** /*----------------------------------------------------------------
+  36:serial.c      **** ------------FUNCTIONS TO WRITE UART-------------------------------
+  37:serial.c      **** -----------------------------------------------------------------*/
+  38:serial.c      ****   void TransmitByte( unsigned char data )
+  39:serial.c      ****   {
+ 334               	.LM38:
+ 335               	/* prologue: frame size=0 */
+ 336               	/* prologue end (size=0) */
+ 337               	.L17:
+  40:serial.c      ****    while ( !(UCSRA & (_BV(UDRE))) );        /* Wait for   empty transmit buffer */
+ 339               	.LM39:
+ 340 00bc 5D9B      		sbis 43-0x20,5
+ 341 00be FECF      		rjmp .L17
+  41:serial.c      ****    UDR =  data;  /* Start transmittion   */
+ 343               	.LM40:
+ 344 00c0 8CB9      		out 44-0x20,r24
+ 345               	/* epilogue: frame size=0 */
+ 346 00c2 0895      		ret
+ 347               	/* epilogue end (size=1) */
+ 348               	/* function TransmitByte size 4 (3) */
+ 350               	.Lscope6:
+ 352               	.global	Init_ADC
+ 354               	Init_ADC:
+ 356               	.Ltext3:
+   1:adc.c         **** 
+   2:adc.c         **** /*----------------------------------------------------------------
+   3:adc.c         **** -----------------FUNCTIONS---------------------------------------
+   4:adc.c         **** -----------------------------------------------------------------*/
+   5:adc.c         **** void Init_ADC(void);
+   6:adc.c         **** int Read_ADC(void);
+   7:adc.c         **** 
+   8:adc.c         **** 
+   9:adc.c         **** 
+  10:adc.c         **** 
+  11:adc.c         **** void Init_ADC(void)
+  12:adc.c         **** {
+ 358               	.LM41:
+ 359               	/* prologue: frame size=0 */
+ 360               	/* prologue end (size=0) */
+  13:adc.c         **** 
+  14:adc.c         ****     
+  15:adc.c         **** 	ADMUX|=(_BV(ADLAR) | _BV(REFS1)| _BV(REFS0)) ;
+ 362               	.LM42:
+ 363 00c4 87B1      		in r24,39-0x20
+ 364 00c6 806E      		ori r24,lo8(-32)
+ 365 00c8 87B9      		out 39-0x20,r24
+  16:adc.c         **** 	// RFS1 and RFS0 are for Internal Reference voltage of 2.56V  AND 8 BIT CONVERSION
+  17:adc.c         **** 	ADMUX&=~(_BV(MUX0)|_BV(MUX1)|_BV(MUX2)|_BV(MUX3)|_BV(MUX4)); //SELECTING CHANNEL0
+ 367               	.LM43:
+ 368 00ca 87B1      		in r24,39-0x20
+ 369 00cc 807E      		andi r24,lo8(-32)
+ 370 00ce 87B9      		out 39-0x20,r24
+  18:adc.c         ****     ADCSRA|=(_BV(ADEN) | _BV(ADPS2) | _BV(ADPS0)) ; //normal conversion without interrupt 
+ 372               	.LM44:
+ 373 00d0 86B1      		in r24,38-0x20
+ 374 00d2 8568      		ori r24,lo8(-123)
+ 375 00d4 86B9      		out 38-0x20,r24
+  19:adc.c         **** 	ADCSRA&=~(_BV(ADSC)|_BV(ADATE)|_BV(ADIF)|_BV(ADIE)|_BV(ADPS1));//clock/32 speed
+ 377               	.LM45:
+ 378 00d6 86B1      		in r24,38-0x20
+ 379 00d8 8578      		andi r24,lo8(-123)
+ 380 00da 86B9      		out 38-0x20,r24
+ 381               	/* epilogue: frame size=0 */
+ 382 00dc 0895      		ret
+ 383               	/* epilogue end (size=1) */
+ 384               	/* function Init_ADC size 13 (12) */
+ 386               	.Lscope7:
+ 388               	.global	Read_ADC
+ 390               	Read_ADC:
+  20:adc.c         ****       
+  21:adc.c         **** }
+  22:adc.c         **** 
+  23:adc.c         **** int Read_ADC(void)
+  24:adc.c         **** {
+ 392               	.LM46:
+ 393               	/* prologue: frame size=0 */
+ 394               	/* prologue end (size=0) */
+  25:adc.c         **** ADCSRA|=_BV(ADSC); //start conversion
+ 396               	.LM47:
+ 397 00de 369A      		sbi 38-0x20,6
+ 398               	.L22:
+  26:adc.c         **** while(!((ADCSRA&_BV(ADIF))>>ADIF));
+ 400               	.LM48:
+ 401 00e0 349B      		sbis 38-0x20,4
+ 402 00e2 FECF      		rjmp .L22
+  27:adc.c         **** return ADCH;
+ 404               	.LM49:
+ 405 00e4 85B1      		in r24,37-0x20
+  28:adc.c         **** }
+ 407               	.LM50:
+ 408 00e6 9927      		clr r25
+ 409               	/* epilogue: frame size=0 */
+ 410 00e8 0895      		ret
+ 411               	/* epilogue end (size=1) */
+ 412               	/* function Read_ADC size 6 (5) */
+ 414               	.Lscope8:
+ 415               		.data
+ 416               	.LC0:
+ 417 0000 54        		.byte	84
+ 418 0001 45        		.byte	69
+ 419 0002 4D        		.byte	77
+ 420 0003 50        		.byte	80
+ 421 0004 45        		.byte	69
+ 422 0005 52        		.byte	82
+ 423 0006 41        		.byte	65
+ 424 0007 54        		.byte	84
+ 425 0008 55        		.byte	85
+ 426 0009 52        		.byte	82
+ 427 000a 45        		.byte	69
+ 428 000b 3A        		.byte	58
+ 429 000c 20        		.byte	32
+ 430 000d 20        		.byte	32
+ 431               		.text
+ 433               	.global	main
+ 435               	main:
+ 437               	.Ltext4:
+   1:bibin.c       **** /*----------------------------------------------------------------
+   2:bibin.c       **** -----------------HEADER FILES-------------------------------------
+   3:bibin.c       **** -----------------------------------------------------------------*/
+   4:bibin.c       **** #include "lcd.c"
+   5:bibin.c       **** #include "serial.c"
+   6:bibin.c       **** #include "adc.c"
+   7:bibin.c       **** 
+   8:bibin.c       **** /*----------------------------------------------------------------
+   9:bibin.c       **** -----------------MAIN FUNCTION------------------------------------
+  10:bibin.c       **** -----------------------------------------------------------------*/
+  11:bibin.c       ****   
+  12:bibin.c       **** void main()
+  13:bibin.c       **** {
+ 439               	.LM51:
+ 440               	/* prologue: frame size=16 */
+ 441 00ea C0E0      		ldi r28,lo8(__stack - 16)
+ 442 00ec D0E0      		ldi r29,hi8(__stack - 16)
+ 443 00ee DEBF      		out __SP_H__,r29
+ 444 00f0 CDBF      		out __SP_L__,r28
+ 445               	/* prologue end (size=4) */
+  14:bibin.c       **** unsigned int i,j,a,b,k;
+  15:bibin.c       **** unsigned char str[14]={'T','E','M','P','E','R','A','T','U','R','E',':',' ',' '};//at starting some 
+ 447               	.LM52:
+ 448 00f2 5E01      		movw r10,r28
+ 449 00f4 0894      		sec
+ 450 00f6 A11C      		adc r10,__zero_reg__
+ 451 00f8 B11C      		adc r11,__zero_reg__
+ 452 00fa D501      		movw r26,r10
+ 453 00fc E0E0      		ldi r30,lo8(.LC0)
+ 454 00fe F0E0      		ldi r31,hi8(.LC0)
+ 455 0100 8EE0      		ldi r24,lo8(14)
+ 456               	.L26:
+ 458               	.LM53:
+ 459 0102 0190      		ld r0,Z+
+ 460 0104 0D92      		st X+,r0
+ 461 0106 8150      		subi r24,lo8(-(-1))
+ 462 0108 E1F7      		brne .L26
+  16:bibin.c       **** unsigned char del[2]={0x08,0X08}; //for deleting previous reading
+ 464               	.LM54:
+ 465 010a 88E0      		ldi r24,lo8(8)
+ 466 010c 8F87      		std Y+15,r24
+ 467 010e 2FE0      		ldi r18,lo8(15)
+ 468 0110 822E      		mov r8,r18
+ 469 0112 912C      		mov r9,__zero_reg__
+ 470 0114 8C0E      		add r8,r28
+ 471 0116 9D1E      		adc r9,r29
+ 472 0118 888B      		std Y+16,r24
+  17:bibin.c       **** //serial port initiliasation
+  18:bibin.c       **** InitUART( 25 ); //1Mhz 2400 8n1
+ 474               	.LM55:
+ 475 011a 89E1      		ldi r24,lo8(25)
+ 476 011c 0E94 0000 		call InitUART
+  19:bibin.c       **** //TransmitByte();
+  20:bibin.c       **** 
+  21:bibin.c       **** //Lcd startups
+  22:bibin.c       **** Init_Ports();
+ 478               	.LM56:
+ 479 0120 0E94 0000 		call Init_Ports
+  23:bibin.c       **** Init_Lcd();
+ 481               	.LM57:
+ 482 0124 0E94 0000 		call Init_Lcd
+  24:bibin.c       **** 
+  25:bibin.c       **** //ADC startups
+  26:bibin.c       **** Init_ADC();
+ 484               	.LM58:
+ 485 0128 0E94 0000 		call Init_ADC
+ 486 012c 8501      		movw r16,r10
+ 487 012e 9DE0      		ldi r25,lo8(13)
+ 488 0130 E92E      		mov r14,r25
+ 489 0132 F12C      		mov r15,__zero_reg__
+ 490 0134 EA0C      		add r14,r10
+ 491 0136 FB1C      		adc r15,r11
+ 492               	.L30:
+  27:bibin.c       **** //Read_ADC(void)
+  28:bibin.c       **** 
+  29:bibin.c       **** 
+  30:bibin.c       **** 
+  31:bibin.c       **** 
+  32:bibin.c       **** //strating the main 
+  33:bibin.c       **** 
+  34:bibin.c       **** 
+  35:bibin.c       **** //sending the string
+  36:bibin.c       **** for(i=0;i<14;i++)
+  37:bibin.c       **** {
+  38:bibin.c       **** Lcd_Send(str[i]);
+ 494               	.LM59:
+ 495 0138 F801      		movw r30,r16
+ 496 013a 8081      		ld r24,Z
+ 497 013c 0E94 0000 		call Lcd_Send
+  39:bibin.c       **** TransmitByte(str[i]);
+ 499               	.LM60:
+ 500 0140 F801      		movw r30,r16
+ 501 0142 8191      		ld r24,Z+
+ 502 0144 8F01      		movw r16,r30
+ 503 0146 0E94 0000 		call TransmitByte
+ 505               	.LM61:
+ 506 014a E016      		cp r14,r16
+ 507 014c F106      		cpc r15,r17
+ 508 014e A0F7      		brsh .L30
+  40:bibin.c       **** }
+  41:bibin.c       **** b=0;
+ 510               	.LM62:
+ 511 0150 00E0      		ldi r16,lo8(0)
+ 512 0152 10E0      		ldi r17,hi8(0)
+ 513               	.L55:
+  42:bibin.c       **** 
+  43:bibin.c       **** do
+  44:bibin.c       **** {
+  45:bibin.c       **** a=Read_ADC();
+ 515               	.LM63:
+ 516 0154 0E94 0000 		call Read_ADC
+ 517 0158 6C01      		movw r12,r24
+  46:bibin.c       **** if(a!=b)
+ 519               	.LM64:
+ 520 015a 8017      		cp r24,r16
+ 521 015c 9107      		cpc r25,r17
+ 522 015e D1F3      		breq .L55
+  47:bibin.c       **** {
+  48:bibin.c       **** //first delete the previous values for uart
+  49:bibin.c       **** 	for(i=0;i<2;i++)
+  50:bibin.c       **** 	{
+  51:bibin.c       **** 	TransmitByte(del[i]);
+ 524               	.LM65:
+ 525 0160 F401      		movw r30,r8
+ 526 0162 8081      		ld r24,Z
+ 527 0164 0E94 0000 		call TransmitByte
+ 528 0168 F401      		movw r30,r8
+ 529 016a 8181      		ldd r24,Z+1
+ 530 016c 0E94 0000 		call TransmitByte
+  52:bibin.c       **** 	}
+  53:bibin.c       **** 	
+  54:bibin.c       **** //for LCD we require initialiatization
+  55:bibin.c       **** 	Init_Lcd();
+ 532               	.LM66:
+ 533 0170 0E94 0000 		call Init_Lcd
+ 534 0174 8501      		movw r16,r10
+ 535 0176 8BE0      		ldi r24,lo8(11)
+ 536 0178 E82E      		mov r14,r24
+ 537 017a F12C      		mov r15,__zero_reg__
+ 538 017c EA0C      		add r14,r10
+ 539 017e FB1C      		adc r15,r11
+ 540               	.L41:
+  56:bibin.c       **** 	for(i=0;i<12;i++)
+  57:bibin.c       **** 	Lcd_Send(str[i]);
+ 542               	.LM67:
+ 543 0180 F801      		movw r30,r16
+ 544 0182 8191      		ld r24,Z+
+ 545 0184 8F01      		movw r16,r30
+ 546 0186 0E94 0000 		call Lcd_Send
+ 548               	.LM68:
+ 549 018a E016      		cp r14,r16
+ 550 018c F106      		cpc r15,r17
+ 551 018e C0F7      		brsh .L41
+  58:bibin.c       **** 	
+  59:bibin.c       **** 
+  60:bibin.c       **** 	
+  61:bibin.c       **** 	
+  62:bibin.c       **** j=a%10;
+ 553               	.LM69:
+ 554 0190 C601      		movw r24,r12
+ 555 0192 6AE0      		ldi r22,lo8(10)
+ 556 0194 70E0      		ldi r23,hi8(10)
+ 557 0196 0E94 0000 		call __udivmodhi4
+ 558 019a 7C01      		movw r14,r24
+  63:bibin.c       **** 
+  64:bibin.c       **** k=a/10;
+ 560               	.LM70:
+ 561 019c C601      		movw r24,r12
+ 562 019e 6AE0      		ldi r22,lo8(10)
+ 563 01a0 70E0      		ldi r23,hi8(10)
+ 564 01a2 0E94 0000 		call __udivmodhi4
+ 565 01a6 CB01      		movw r24,r22
+  65:bibin.c       **** k=k%10;
+ 567               	.LM71:
+ 568 01a8 6AE0      		ldi r22,lo8(10)
+ 569 01aa 70E0      		ldi r23,hi8(10)
+ 570 01ac 0E94 0000 		call __udivmodhi4
+  66:bibin.c       **** Lcd_Send((k+0x30));
+ 572               	.LM72:
+ 573 01b0 182F      		mov r17,r24
+ 574 01b2 105D      		subi r17,lo8(-(48))
+ 575 01b4 812F      		mov r24,r17
+ 576 01b6 0E94 0000 		call Lcd_Send
+  67:bibin.c       **** TransmitByte((k+0x30));
+ 578               	.LM73:
+ 579 01ba 812F      		mov r24,r17
+ 580 01bc 0E94 0000 		call TransmitByte
+  68:bibin.c       **** 
+  69:bibin.c       **** Lcd_Send((j+0x30)); //since both will display ASCII values, we convert decimal to ASCII
+ 582               	.LM74:
+ 583 01c0 1E2D      		mov r17,r14
+ 584 01c2 105D      		subi r17,lo8(-(48))
+ 585 01c4 812F      		mov r24,r17
+ 586 01c6 0E94 0000 		call Lcd_Send
+  70:bibin.c       **** TransmitByte((j+0x30));
+ 588               	.LM75:
+ 589 01ca 812F      		mov r24,r17
+ 590 01cc 0E94 0000 		call TransmitByte
+  71:bibin.c       **** 
+  72:bibin.c       **** b=a; //for next value 
+ 592               	.LM76:
+ 593 01d0 8601      		movw r16,r12
+  73:bibin.c       **** //delay sometime (1s) otherwise LCD display will run
+  74:bibin.c       **** 	delay(1000);
+ 595               	.LM77:
+ 596 01d2 88EE      		ldi r24,lo8(-24)
+ 597 01d4 0E94 0000 		call delay_ms
+  75:bibin.c       **** }
+  76:bibin.c       **** 
+  77:bibin.c       **** }
+ 599               	.LM78:
+ 600 01d8 BDCF      		rjmp .L55
+ 601               	/* epilogue: frame size=16 */
+ 602               	/* epilogue: noreturn */
+ 603               	/* epilogue end (size=0) */
+ 604               	/* function main size 121 (117) */
+ 612               	.Lscope9:
+ 613               		.text
+ 615               	Letext:
+ 616               	/* File "bibin.c": code  252 = 0x00fc ( 217), prologues  16, epilogues  19 */
+DEFINED SYMBOLS
+                            *ABS*:00000000 bibin.c
+D:\DOCUME~1\ADMINI~1\LOCALS~1\Temp/cc8oaaaa.s:3      *ABS*:0000003f __SREG__
+D:\DOCUME~1\ADMINI~1\LOCALS~1\Temp/cc8oaaaa.s:4      *ABS*:0000003e __SP_H__
+D:\DOCUME~1\ADMINI~1\LOCALS~1\Temp/cc8oaaaa.s:5      *ABS*:0000003d __SP_L__
+D:\DOCUME~1\ADMINI~1\LOCALS~1\Temp/cc8oaaaa.s:6      *ABS*:00000000 __tmp_reg__
+D:\DOCUME~1\ADMINI~1\LOCALS~1\Temp/cc8oaaaa.s:7      *ABS*:00000001 __zero_reg__
+D:\DOCUME~1\ADMINI~1\LOCALS~1\Temp/cc8oaaaa.s:79     .text:00000000 delay_ms
+D:\DOCUME~1\ADMINI~1\LOCALS~1\Temp/cc8oaaaa.s:94     .text:00000004 L_dl17
+D:\DOCUME~1\ADMINI~1\LOCALS~1\Temp/cc8oaaaa.s:97     .text:00000008 L_dl27
+D:\DOCUME~1\ADMINI~1\LOCALS~1\Temp/cc8oaaaa.s:118    .text:00000012 Lcd_Send
+D:\DOCUME~1\ADMINI~1\LOCALS~1\Temp/cc8oaaaa.s:155    .text:0000002a Init_Ports
+D:\DOCUME~1\ADMINI~1\LOCALS~1\Temp/cc8oaaaa.s:182    .text:0000003a Init_Lcd
+D:\DOCUME~1\ADMINI~1\LOCALS~1\Temp/cc8oaaaa.s:282    .text:000000a8 InitUART
+D:\DOCUME~1\ADMINI~1\LOCALS~1\Temp/cc8oaaaa.s:306    .text:000000b2 ReceiveByte
+D:\DOCUME~1\ADMINI~1\LOCALS~1\Temp/cc8oaaaa.s:332    .text:000000bc TransmitByte
+D:\DOCUME~1\ADMINI~1\LOCALS~1\Temp/cc8oaaaa.s:354    .text:000000c4 Init_ADC
+D:\DOCUME~1\ADMINI~1\LOCALS~1\Temp/cc8oaaaa.s:390    .text:000000de Read_ADC
+D:\DOCUME~1\ADMINI~1\LOCALS~1\Temp/cc8oaaaa.s:435    .text:000000ea main
+D:\DOCUME~1\ADMINI~1\LOCALS~1\Temp/cc8oaaaa.s:615    .text:000001da Letext
+
+UNDEFINED SYMBOLS
+__do_copy_data
+__do_clear_bss
+__stack
+__udivmodhi4

@@ -1,0 +1,200 @@
+   1               		.file	"bibin.c"
+   2               		.arch atmega32
+   3               	__SREG__ = 0x3f
+   4               	__SP_H__ = 0x3e
+   5               	__SP_L__ = 0x3d
+   6               	__tmp_reg__ = 0
+   7               	__zero_reg__ = 1
+   8               		.global __do_copy_data
+   9               		.global __do_clear_bss
+  11               		.text
+  12               	.Ltext0:
+  74               	.global	Init_Ports
+  76               	Init_Ports:
+   1:bibin.c       **** /*----------------------------------------------------------------
+   2:bibin.c       **** -----------------HEADER FILES-------------------------------------
+   3:bibin.c       **** -----------------------------------------------------------------*/
+   4:bibin.c       **** #include<avr/io.h>
+   5:bibin.c       **** 
+   6:bibin.c       **** 
+   7:bibin.c       **** /*----------------------------------------------------------------
+   8:bibin.c       **** -------------CONNECTION BETWEEN L293D AND ATMEGA32---------------
+   9:bibin.c       **** -----------------------------------------------------------------*/
+  10:bibin.c       **** #define L293D_DDR	 DDRC
+  11:bibin.c       **** #define L293D_PORT 	 PORTC
+  12:bibin.c       **** #define Pin_1         0
+  13:bibin.c       **** #define Pin_2		  1
+  14:bibin.c       **** #define Pin_3         2
+  15:bibin.c       **** #define Pin_4		  3
+  16:bibin.c       **** #define L293D_Mask   0x0f
+  17:bibin.c       **** 
+  18:bibin.c       **** 
+  19:bibin.c       **** /*----------------------------------------------------------------
+  20:bibin.c       **** -----------------FUNCTIONS---------------------------------------
+  21:bibin.c       **** -----------------------------------------------------------------*/
+  22:bibin.c       **** void Init_Ports(void);
+  23:bibin.c       **** void delay_ms(unsigned char time_ms);
+  24:bibin.c       **** 
+  25:bibin.c       **** void main()
+  26:bibin.c       **** {
+  27:bibin.c       **** int i;
+  28:bibin.c       **** int steps[]={15,13,12,14};
+  29:bibin.c       **** Init_Ports();
+  30:bibin.c       **** i=0;
+  31:bibin.c       **** do
+  32:bibin.c       **** {
+  33:bibin.c       **** L293D_PORT=steps[i];
+  34:bibin.c       **** i++;
+  35:bibin.c       **** if(i>4) i=0;
+  36:bibin.c       **** delay_ms(50);
+  37:bibin.c       **** }
+  38:bibin.c       **** while(1);
+  39:bibin.c       **** }
+  40:bibin.c       **** 
+  41:bibin.c       **** 
+  42:bibin.c       **** 
+  43:bibin.c       **** /*----------------------------------------------------------------
+  44:bibin.c       **** -----------------FUNCTIONS TO INITIALIZE PORTS--------------------
+  45:bibin.c       **** -----------------------------------------------------------------*/
+  46:bibin.c       **** void Init_Ports(void)
+  47:bibin.c       **** {
+  78               	.LM1:
+  79               	/* prologue: frame size=0 */
+  80               	/* prologue end (size=0) */
+  48:bibin.c       **** L293D_DDR|=(_BV(Pin_1 )|_BV(Pin_2)|_BV(Pin_3 )|_BV(Pin_4)); //setting pins for output
+  82               	.LM2:
+  83 0000 84B3      		in r24,52-0x20
+  84 0002 8F60      		ori r24,lo8(15)
+  85 0004 84BB      		out 52-0x20,r24
+  49:bibin.c       **** L293D_PORT&=~(_BV(Pin_1 )|_BV(Pin_2)|_BV(Pin_3 )|_BV(Pin_4));//starting motor is Off
+  87               	.LM3:
+  88 0006 85B3      		in r24,53-0x20
+  89 0008 807F      		andi r24,lo8(-16)
+  90 000a 85BB      		out 53-0x20,r24
+  91               	/* epilogue: frame size=0 */
+  92 000c 0895      		ret
+  93               	/* epilogue end (size=1) */
+  94               	/* function Init_Ports size 7 (6) */
+  96               	.Lscope0:
+  99               	.global	delay_ms
+ 101               	delay_ms:
+  50:bibin.c       **** }
+  51:bibin.c       **** /*----------------------------------------------------------------
+  52:bibin.c       **** --------FUNCTION TO GENERATE DELAY IN MILLISECONDS----------------
+  53:bibin.c       **** -----------------------------------------------------------------*/
+  54:bibin.c       **** void delay_ms(unsigned char time_ms)
+  55:bibin.c       **** {
+ 103               	.LM4:
+ 104               	/* prologue: frame size=0 */
+ 105               	/* prologue end (size=0) */
+  56:bibin.c       **** 	unsigned short delay_count = F_CPU / 400;
+ 107               	.LM5:
+ 108 000e 24EC      		ldi r18,lo8(2500)
+ 109 0010 39E0      		ldi r19,hi8(2500)
+  57:bibin.c       **** 
+  58:bibin.c       **** 	unsigned short cnt;
+  59:bibin.c       **** 	asm volatile ("\n"
+ 111               	.LM6:
+ 112               	/* #APP */
+ 113               		
+ 114               	L_dl119:
+ 115 0012 E22F      		mov r30, r18
+ 116 0014 F32F      		mov r31, r19
+ 117               	L_dl219:
+ 118 0016 3197      		sbiw r30, 1
+ 119 0018 F1F7      		brne L_dl219
+ 120 001a 8A95      		dec r24
+ 121 001c D1F7      		brne L_dl119
+ 122               		
+ 123               	/* #NOAPP */
+ 124               	/* epilogue: frame size=0 */
+ 125 001e 0895      		ret
+ 126               	/* epilogue end (size=1) */
+ 127               	/* function delay_ms size 23 (22) */
+ 133               	.Lscope1:
+ 134               		.data
+ 135               	.LC0:
+ 136 0000 0F00      		.word	15
+ 137 0002 0D00      		.word	13
+ 138 0004 0C00      		.word	12
+ 139 0006 0E00      		.word	14
+ 140               		.text
+ 142               	.global	main
+ 144               	main:
+ 146               	.LM7:
+ 147               	/* prologue: frame size=8 */
+ 148 0020 C0E0      		ldi r28,lo8(__stack - 8)
+ 149 0022 D0E0      		ldi r29,hi8(__stack - 8)
+ 150 0024 DEBF      		out __SP_H__,r29
+ 151 0026 CDBF      		out __SP_L__,r28
+ 152               	/* prologue end (size=4) */
+ 154               	.LM8:
+ 155 0028 7E01      		movw r14,r28
+ 156 002a 0894      		sec
+ 157 002c E11C      		adc r14,__zero_reg__
+ 158 002e F11C      		adc r15,__zero_reg__
+ 159 0030 D701      		movw r26,r14
+ 160 0032 E0E0      		ldi r30,lo8(.LC0)
+ 161 0034 F0E0      		ldi r31,hi8(.LC0)
+ 162 0036 88E0      		ldi r24,lo8(8)
+ 163               	.L4:
+ 165               	.LM9:
+ 166 0038 0190      		ld r0,Z+
+ 167 003a 0D92      		st X+,r0
+ 168 003c 8150      		subi r24,lo8(-(-1))
+ 169 003e E1F7      		brne .L4
+ 171               	.LM10:
+ 172 0040 0E94 0000 		call Init_Ports
+ 174               	.LM11:
+ 175 0044 00E0      		ldi r16,lo8(0)
+ 176 0046 10E0      		ldi r17,hi8(0)
+ 177               	.L5:
+ 179               	.LM12:
+ 180 0048 F801      		movw r30,r16
+ 181 004a E00F      		add r30,r16
+ 182 004c F11F      		adc r31,r17
+ 183 004e EE0D      		add r30,r14
+ 184 0050 FF1D      		adc r31,r15
+ 185 0052 8081      		ld r24,Z
+ 186 0054 85BB      		out 53-0x20,r24
+ 188               	.LM13:
+ 189 0056 0F5F      		subi r16,lo8(-(1))
+ 190 0058 1F4F      		sbci r17,hi8(-(1))
+ 192               	.LM14:
+ 193 005a 0530      		cpi r16,5
+ 194 005c 1105      		cpc r17,__zero_reg__
+ 195 005e 14F0      		brlt .L7
+ 196 0060 00E0      		ldi r16,lo8(0)
+ 197 0062 10E0      		ldi r17,hi8(0)
+ 198               	.L7:
+ 200               	.LM15:
+ 201 0064 82E3      		ldi r24,lo8(50)
+ 202 0066 0E94 0000 		call delay_ms
+ 204               	.LM16:
+ 205 006a EECF      		rjmp .L5
+ 206               	/* epilogue: frame size=8 */
+ 207               	/* epilogue: noreturn */
+ 208               	/* epilogue end (size=0) */
+ 209               	/* function main size 39 (35) */
+ 215               	.Lscope2:
+ 216               		.text
+ 218               	Letext:
+ 219               	/* File "bibin.c": code   69 = 0x0045 (  63), prologues   4, epilogues   2 */
+DEFINED SYMBOLS
+                            *ABS*:00000000 bibin.c
+D:\DOCUME~1\ADMINI~1\LOCALS~1\Temp/cc4gaaaa.s:3      *ABS*:0000003f __SREG__
+D:\DOCUME~1\ADMINI~1\LOCALS~1\Temp/cc4gaaaa.s:4      *ABS*:0000003e __SP_H__
+D:\DOCUME~1\ADMINI~1\LOCALS~1\Temp/cc4gaaaa.s:5      *ABS*:0000003d __SP_L__
+D:\DOCUME~1\ADMINI~1\LOCALS~1\Temp/cc4gaaaa.s:6      *ABS*:00000000 __tmp_reg__
+D:\DOCUME~1\ADMINI~1\LOCALS~1\Temp/cc4gaaaa.s:7      *ABS*:00000001 __zero_reg__
+D:\DOCUME~1\ADMINI~1\LOCALS~1\Temp/cc4gaaaa.s:76     .text:00000000 Init_Ports
+D:\DOCUME~1\ADMINI~1\LOCALS~1\Temp/cc4gaaaa.s:101    .text:0000000e delay_ms
+D:\DOCUME~1\ADMINI~1\LOCALS~1\Temp/cc4gaaaa.s:114    .text:00000012 L_dl119
+D:\DOCUME~1\ADMINI~1\LOCALS~1\Temp/cc4gaaaa.s:117    .text:00000016 L_dl219
+D:\DOCUME~1\ADMINI~1\LOCALS~1\Temp/cc4gaaaa.s:144    .text:00000020 main
+D:\DOCUME~1\ADMINI~1\LOCALS~1\Temp/cc4gaaaa.s:218    .text:0000006c Letext
+
+UNDEFINED SYMBOLS
+__do_copy_data
+__do_clear_bss
+__stack

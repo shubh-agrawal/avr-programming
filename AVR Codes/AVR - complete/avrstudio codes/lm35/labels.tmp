@@ -1,0 +1,34 @@
+<ASSEMBLER_INFO>
+ <VERSION>2.1.12</VERSION>
+ <DEVICE>Unknown</DEVICE>
+ <WORKING_DIR>C:\Users\Navaid Khan\My Shared Files\Robotics\Embedded\Datasheets\AVR\AVRPRogram\avr codes\AVR - complete\avrstudio codes\lm35</WORKING_DIR>
+ <INCLUDE_PATH>
+  <DIR>C:\Program Files\Atmel\AVR Tools\AvrAssembler2\Appnotes</DIR>
+ </INCLUDE_PATH>
+ <SOURCE_FILE>C:\Users\Navaid Khan\My Shared Files\Robotics\Embedded\Datasheets\AVR\AVRPRogram\avr codes\AVR - complete\avrstudio codes\lm35\lm35.asm</SOURCE_FILE>
+ <INCLUDED_FILES>
+ </INCLUDED_FILES>
+ <OBJECT_FILES>
+  <FILE>C:\Users\Navaid Khan\My Shared Files\Robotics\Embedded\Datasheets\AVR\AVRPRogram\avr codes\AVR - complete\avrstudio codes\lm35\lm35.obj</FILE>
+ </OBJECT_FILES>
+ <HEX_FILES>
+  <FILE>C:\Users\Navaid Khan\My Shared Files\Robotics\Embedded\Datasheets\AVR\AVRPRogram\avr codes\AVR - complete\avrstudio codes\lm35\lm35.hex</FILE>
+ </HEX_FILES>
+ <OUTPUT_FILES>
+  <FILE>C:\Users\Navaid Khan\My Shared Files\Robotics\Embedded\Datasheets\AVR\AVRPRogram\avr codes\AVR - complete\avrstudio codes\lm35\lm35.map</FILE>
+ </OUTPUT_FILES>
+ <LABELS>
+  <RESET><FILE>C:\Users\Navaid Khan\My Shared Files\Robotics\Embedded\Datasheets\AVR\AVRPRogram\avr codes\AVR - complete\avrstudio codes\lm35\lm35.asm</FILE><LINE>7</LINE></RESET>
+  <ADC_INIT><FILE>C:\Users\Navaid Khan\My Shared Files\Robotics\Embedded\Datasheets\AVR\AVRPRogram\avr codes\AVR - complete\avrstudio codes\lm35\lm35.asm</FILE><LINE>16</LINE></ADC_INIT>
+  <ADCSTART><FILE>C:\Users\Navaid Khan\My Shared Files\Robotics\Embedded\Datasheets\AVR\AVRPRogram\avr codes\AVR - complete\avrstudio codes\lm35\lm35.asm</FILE><LINE>26</LINE></ADCSTART>
+  <WAIT><FILE>C:\Users\Navaid Khan\My Shared Files\Robotics\Embedded\Datasheets\AVR\AVRPRogram\avr codes\AVR - complete\avrstudio codes\lm35\lm35.asm</FILE><LINE>30</LINE></WAIT>
+  <H2BCD><FILE>C:\Users\Navaid Khan\My Shared Files\Robotics\Embedded\Datasheets\AVR\AVRPRogram\avr codes\AVR - complete\avrstudio codes\lm35\lm35.asm</FILE><LINE>41</LINE></H2BCD>
+  <SUBTRACTION><FILE>C:\Users\Navaid Khan\My Shared Files\Robotics\Embedded\Datasheets\AVR\AVRPRogram\avr codes\AVR - complete\avrstudio codes\lm35\lm35.asm</FILE><LINE>47</LINE></SUBTRACTION>
+  <OUTPUT><FILE>C:\Users\Navaid Khan\My Shared Files\Robotics\Embedded\Datasheets\AVR\AVRPRogram\avr codes\AVR - complete\avrstudio codes\lm35\lm35.asm</FILE><LINE>54</LINE></OUTPUT>
+  <DELAY><FILE>C:\Users\Navaid Khan\My Shared Files\Robotics\Embedded\Datasheets\AVR\AVRPRogram\avr codes\AVR - complete\avrstudio codes\lm35\lm35.asm</FILE><LINE>64</LINE></DELAY>
+  <WGLOOP0><FILE>C:\Users\Navaid Khan\My Shared Files\Robotics\Embedded\Datasheets\AVR\AVRPRogram\avr codes\AVR - complete\avrstudio codes\lm35\lm35.asm</FILE><LINE>71</LINE></WGLOOP0>
+  <WGLOOP1><FILE>C:\Users\Navaid Khan\My Shared Files\Robotics\Embedded\Datasheets\AVR\AVRPRogram\avr codes\AVR - complete\avrstudio codes\lm35\lm35.asm</FILE><LINE>72</LINE></WGLOOP1>
+  <WGLOOP2><FILE>C:\Users\Navaid Khan\My Shared Files\Robotics\Embedded\Datasheets\AVR\AVRPRogram\avr codes\AVR - complete\avrstudio codes\lm35\lm35.asm</FILE><LINE>73</LINE></WGLOOP2>
+  <WGLOOP3><FILE>C:\Users\Navaid Khan\My Shared Files\Robotics\Embedded\Datasheets\AVR\AVRPRogram\avr codes\AVR - complete\avrstudio codes\lm35\lm35.asm</FILE><LINE>82</LINE></WGLOOP3>
+ </LABELS>
+</ASSEMBLER_INFO>

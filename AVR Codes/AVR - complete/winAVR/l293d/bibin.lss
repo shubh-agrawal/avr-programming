@@ -1,0 +1,205 @@
+
+bibin.elf:     file format elf32-avr
+
+Sections:
+Idx Name          Size      VMA       LMA       File off  Algn
+  0 .text         0000012c  00000000  00000000  00000094  2**0
+                  CONTENTS, ALLOC, LOAD, READONLY, CODE
+  1 .data         00000000  00800060  0000012c  000001c0  2**0
+                  CONTENTS, ALLOC, LOAD, DATA
+  2 .bss          00000000  00800060  0000012c  000001c0  2**0
+                  ALLOC
+  3 .noinit       00000000  00800060  00800060  000001c0  2**0
+                  CONTENTS
+  4 .eeprom       00000000  00810000  00810000  000001c0  2**0
+                  CONTENTS
+  5 .stab         000007e0  00000000  00000000  000001c0  2**2
+                  CONTENTS, READONLY, DEBUGGING
+  6 .stabstr      00000767  00000000  00000000  000009a0  2**0
+                  CONTENTS, READONLY, DEBUGGING
+Disassembly of section .text:
+
+00000000 <__vectors>:
+   0:	0c 94 2a 00 	jmp	0x54 <__ctors_end>
+   4:	0c 94 45 00 	jmp	0x8a <__bad_interrupt>
+   8:	0c 94 45 00 	jmp	0x8a <__bad_interrupt>
+   c:	0c 94 45 00 	jmp	0x8a <__bad_interrupt>
+  10:	0c 94 45 00 	jmp	0x8a <__bad_interrupt>
+  14:	0c 94 45 00 	jmp	0x8a <__bad_interrupt>
+  18:	0c 94 45 00 	jmp	0x8a <__bad_interrupt>
+  1c:	0c 94 45 00 	jmp	0x8a <__bad_interrupt>
+  20:	0c 94 45 00 	jmp	0x8a <__bad_interrupt>
+  24:	0c 94 45 00 	jmp	0x8a <__bad_interrupt>
+  28:	0c 94 45 00 	jmp	0x8a <__bad_interrupt>
+  2c:	0c 94 45 00 	jmp	0x8a <__bad_interrupt>
+  30:	0c 94 45 00 	jmp	0x8a <__bad_interrupt>
+  34:	0c 94 45 00 	jmp	0x8a <__bad_interrupt>
+  38:	0c 94 45 00 	jmp	0x8a <__bad_interrupt>
+  3c:	0c 94 45 00 	jmp	0x8a <__bad_interrupt>
+  40:	0c 94 45 00 	jmp	0x8a <__bad_interrupt>
+  44:	0c 94 45 00 	jmp	0x8a <__bad_interrupt>
+  48:	0c 94 45 00 	jmp	0x8a <__bad_interrupt>
+  4c:	0c 94 45 00 	jmp	0x8a <__bad_interrupt>
+  50:	0c 94 45 00 	jmp	0x8a <__bad_interrupt>
+
+00000054 <__ctors_end>:
+  54:	11 24       	eor	r1, r1
+  56:	1f be       	out	0x3f, r1	; 63
+  58:	cf e5       	ldi	r28, 0x5F	; 95
+  5a:	d8 e0       	ldi	r29, 0x08	; 8
+  5c:	de bf       	out	0x3e, r29	; 62
+  5e:	cd bf       	out	0x3d, r28	; 61
+
+00000060 <__do_copy_data>:
+  60:	10 e0       	ldi	r17, 0x00	; 0
+  62:	a0 e6       	ldi	r26, 0x60	; 96
+  64:	b0 e0       	ldi	r27, 0x00	; 0
+  66:	ec e2       	ldi	r30, 0x2C	; 44
+  68:	f1 e0       	ldi	r31, 0x01	; 1
+  6a:	02 c0       	rjmp	.+4      	; 0x70 <.do_copy_data_start>
+
+0000006c <.do_copy_data_loop>:
+  6c:	05 90       	lpm	r0, Z+
+  6e:	0d 92       	st	X+, r0
+
+00000070 <.do_copy_data_start>:
+  70:	a0 36       	cpi	r26, 0x60	; 96
+  72:	b1 07       	cpc	r27, r17
+  74:	d9 f7       	brne	.-10     	; 0x6c <.do_copy_data_loop>
+
+00000076 <__do_clear_bss>:
+  76:	10 e0       	ldi	r17, 0x00	; 0
+  78:	a0 e6       	ldi	r26, 0x60	; 96
+  7a:	b0 e0       	ldi	r27, 0x00	; 0
+  7c:	01 c0       	rjmp	.+2      	; 0x80 <.do_clear_bss_start>
+
+0000007e <.do_clear_bss_loop>:
+  7e:	1d 92       	st	X+, r1
+
+00000080 <.do_clear_bss_start>:
+  80:	a0 36       	cpi	r26, 0x60	; 96
+  82:	b1 07       	cpc	r27, r17
+  84:	e1 f7       	brne	.-8      	; 0x7e <.do_clear_bss_loop>
+  86:	0c 94 5f 00 	jmp	0xbe <main>
+
+0000008a <__bad_interrupt>:
+  8a:	0c 94 00 00 	jmp	0x0 <__vectors>
+
+0000008e <Init_Ports>:
+-----------------FUNCTIONS TO INITIALIZE PORTS--------------------
+-----------------------------------------------------------------*/
+void Init_Ports(void)
+{
+L293D_DDR|=(_BV(Pin_1 )|_BV(Pin_2)); //setting pins for output
+  8e:	84 b3       	in	r24, 0x14	; 20
+  90:	83 60       	ori	r24, 0x03	; 3
+  92:	84 bb       	out	0x14, r24	; 20
+L293D_PORT&=~(_BV(Pin_1 )|_BV(Pin_2));//starting motor is Off
+  94:	85 b3       	in	r24, 0x15	; 21
+  96:	8c 7f       	andi	r24, 0xFC	; 252
+  98:	85 bb       	out	0x15, r24	; 21
+Input_DDR&=~(_BV(5)|_BV(6));//making as input pins
+  9a:	81 b3       	in	r24, 0x11	; 17
+  9c:	8f 79       	andi	r24, 0x9F	; 159
+  9e:	81 bb       	out	0x11, r24	; 17
+  a0:	08 95       	ret
+
+000000a2 <brake>:
+}
+
+
+void forward(void)
+{
+L293D_PORT|=_BV(Pin_1 );
+L293D_PORT&=~_BV(Pin_2);
+}
+
+
+void backward(void)
+{
+L293D_PORT|=_BV(Pin_2);
+L293D_PORT&=~_BV(Pin_1 );
+}
+
+
+void brake(void)
+{
+L293D_PORT|=(_BV(Pin_2)|_BV(Pin_1 ));
+  a2:	85 b3       	in	r24, 0x15	; 21
+  a4:	83 60       	ori	r24, 0x03	; 3
+  a6:	85 bb       	out	0x15, r24	; 21
+  a8:	08 95       	ret
+
+000000aa <stop>:
+}
+
+
+void stop(void)
+{
+L293D_PORT&=~(_BV(Pin_1 )|_BV(Pin_2));
+  aa:	85 b3       	in	r24, 0x15	; 21
+  ac:	8c 7f       	andi	r24, 0xFC	; 252
+  ae:	85 bb       	out	0x15, r24	; 21
+  b0:	08 95       	ret
+
+000000b2 <forward>:
+  b2:	a8 9a       	sbi	0x15, 0	; 21
+  b4:	a9 98       	cbi	0x15, 1	; 21
+  b6:	08 95       	ret
+
+000000b8 <backward>:
+  b8:	a9 9a       	sbi	0x15, 1	; 21
+  ba:	a8 98       	cbi	0x15, 0	; 21
+  bc:	08 95       	ret
+
+000000be <main>:
+  be:	cf e5       	ldi	r28, 0x5F	; 95
+  c0:	d8 e0       	ldi	r29, 0x08	; 8
+  c2:	de bf       	out	0x3e, r29	; 62
+  c4:	cd bf       	out	0x3d, r28	; 61
+  c6:	0e 94 47 00 	call	0x8e <Init_Ports>
+  ca:	80 b3       	in	r24, 0x10	; 16
+  cc:	08 2f       	mov	r16, r24
+  ce:	11 27       	eor	r17, r17
+  d0:	00 74       	andi	r16, 0x40	; 64
+  d2:	10 70       	andi	r17, 0x00	; 0
+  d4:	96 e0       	ldi	r25, 0x06	; 6
+  d6:	15 95       	asr	r17
+  d8:	07 95       	ror	r16
+  da:	9a 95       	dec	r25
+  dc:	e1 f7       	brne	.-8      	; 0xd6 <main+0x18>
+  de:	80 b3       	in	r24, 0x10	; 16
+  e0:	c8 2f       	mov	r28, r24
+  e2:	dd 27       	eor	r29, r29
+  e4:	c0 72       	andi	r28, 0x20	; 32
+  e6:	d0 70       	andi	r29, 0x00	; 0
+  e8:	85 e0       	ldi	r24, 0x05	; 5
+  ea:	d5 95       	asr	r29
+  ec:	c7 95       	ror	r28
+  ee:	8a 95       	dec	r24
+  f0:	e1 f7       	brne	.-8      	; 0xea <main+0x2c>
+  f2:	01 30       	cpi	r16, 0x01	; 1
+  f4:	11 05       	cpc	r17, r1
+  f6:	31 f4       	brne	.+12     	; 0x104 <main+0x46>
+  f8:	c1 30       	cpi	r28, 0x01	; 1
+  fa:	d1 05       	cpc	r29, r1
+  fc:	79 f4       	brne	.+30     	; 0x11c <main+0x5e>
+  fe:	0e 94 51 00 	call	0xa2 <brake>
+ 102:	0c c0       	rjmp	.+24     	; 0x11c <main+0x5e>
+ 104:	01 15       	cp	r16, r1
+ 106:	11 05       	cpc	r17, r1
+ 108:	49 f4       	brne	.+18     	; 0x11c <main+0x5e>
+ 10a:	20 97       	sbiw	r28, 0x00	; 0
+ 10c:	11 f4       	brne	.+4      	; 0x112 <main+0x54>
+ 10e:	0e 94 55 00 	call	0xaa <stop>
+ 112:	c1 30       	cpi	r28, 0x01	; 1
+ 114:	d1 05       	cpc	r29, r1
+ 116:	11 f4       	brne	.+4      	; 0x11c <main+0x5e>
+ 118:	0e 94 59 00 	call	0xb2 <forward>
+ 11c:	01 30       	cpi	r16, 0x01	; 1
+ 11e:	11 05       	cpc	r17, r1
+ 120:	a1 f6       	brne	.-88     	; 0xca <main+0xc>
+ 122:	cd 2b       	or	r28, r29
+ 124:	91 f6       	brne	.-92     	; 0xca <main+0xc>
+ 126:	0e 94 5c 00 	call	0xb8 <backward>
+ 12a:	cf cf       	rjmp	.-98     	; 0xca <main+0xc>

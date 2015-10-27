@@ -1,0 +1,20 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Atmel Studio Solution File, Format Version 11.00
+Project("{54F91283-7BC4-4236-8FF9-10F437C3AD48}") = "MotorPWMTimerADC", "MotorPWMTimerADC\MotorPWMTimerADC.cproj", "{07F35F08-9AF1-4792-9867-6AEB68112A2E}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|AVR = Debug|AVR
+		Release|AVR = Release|AVR
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{07F35F08-9AF1-4792-9867-6AEB68112A2E}.Debug|AVR.ActiveCfg = Debug|AVR
+		{07F35F08-9AF1-4792-9867-6AEB68112A2E}.Debug|AVR.Build.0 = Debug|AVR
+		{07F35F08-9AF1-4792-9867-6AEB68112A2E}.Release|AVR.ActiveCfg = Release|AVR
+		{07F35F08-9AF1-4792-9867-6AEB68112A2E}.Release|AVR.Build.0 = Release|AVR
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

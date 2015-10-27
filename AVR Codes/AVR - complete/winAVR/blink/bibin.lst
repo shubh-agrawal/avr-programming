@@ -1,0 +1,136 @@
+   1               		.file	"bibin.c"
+   2               		.arch atmega32
+   3               	__SREG__ = 0x3f
+   4               	__SP_H__ = 0x3e
+   5               	__SP_L__ = 0x3d
+   6               	__tmp_reg__ = 0
+   7               	__zero_reg__ = 1
+   8               		.global __do_copy_data
+   9               		.global __do_clear_bss
+  11               		.text
+  12               	.Ltext0:
+  75               	.global	delay_ms
+  77               	delay_ms:
+   1:bibin.c       **** #include<avr/io.h>
+   2:bibin.c       **** void delay_ms(unsigned char time_ms);
+   3:bibin.c       **** main()
+   4:bibin.c       **** {
+   5:bibin.c       **** DDRC=0xff;
+   6:bibin.c       **** DDRA=0xff;
+   7:bibin.c       **** DDRB=0xff;
+   8:bibin.c       **** DDRD=0xff;
+   9:bibin.c       **** 
+  10:bibin.c       **** while(1)
+  11:bibin.c       **** {
+  12:bibin.c       **** 	PORTC=0X00;
+  13:bibin.c       **** 	PORTA=0X00;
+  14:bibin.c       **** 	PORTB=0X00;
+  15:bibin.c       **** 	PORTD=0X00;
+  16:bibin.c       **** 	delay_ms(200);
+  17:bibin.c       **** 	PORTA=0Xff;
+  18:bibin.c       **** 	PORTB=0Xff;
+  19:bibin.c       **** 	PORTC=0Xff;
+  20:bibin.c       **** 	PORTD=0Xff;
+  21:bibin.c       **** 	delay_ms(200);
+  22:bibin.c       **** 	}
+  23:bibin.c       **** 	return(0);
+  24:bibin.c       **** }
+  25:bibin.c       **** 
+  26:bibin.c       **** void delay_ms(unsigned char time_ms)
+  27:bibin.c       **** {
+  79               	.LM1:
+  80               	/* prologue: frame size=0 */
+  81               	/* prologue end (size=0) */
+  28:bibin.c       **** 	unsigned short delay_count = F_CPU / 4000;
+  83               	.LM2:
+  84 0000 2AEF      		ldi r18,lo8(250)
+  85 0002 30E0      		ldi r19,hi8(250)
+  29:bibin.c       **** 
+  30:bibin.c       **** 	unsigned short cnt;
+  31:bibin.c       **** 	asm volatile ("\n"
+  87               	.LM3:
+  88               	/* #APP */
+  89               		
+  90               	L_dl17:
+  91 0004 E22F      		mov r30, r18
+  92 0006 F32F      		mov r31, r19
+  93               	L_dl27:
+  94 0008 3197      		sbiw r30, 1
+  95 000a F1F7      		brne L_dl27
+  96 000c 8A95      		dec r24
+  97 000e D1F7      		brne L_dl17
+  98               		
+  99               	/* #NOAPP */
+ 100               	/* epilogue: frame size=0 */
+ 101 0010 0895      		ret
+ 102               	/* epilogue end (size=1) */
+ 103               	/* function delay_ms size 23 (22) */
+ 109               	.Lscope0:
+ 111               	.global	main
+ 113               	main:
+ 115               	.LM4:
+ 116               	/* prologue: frame size=0 */
+ 117 0012 C0E0      		ldi r28,lo8(__stack - 0)
+ 118 0014 D0E0      		ldi r29,hi8(__stack - 0)
+ 119 0016 DEBF      		out __SP_H__,r29
+ 120 0018 CDBF      		out __SP_L__,r28
+ 121               	/* prologue end (size=4) */
+ 123               	.LM5:
+ 124 001a 8FEF      		ldi r24,lo8(-1)
+ 125 001c 84BB      		out 52-0x20,r24
+ 127               	.LM6:
+ 128 001e 8ABB      		out 58-0x20,r24
+ 130               	.LM7:
+ 131 0020 87BB      		out 55-0x20,r24
+ 133               	.LM8:
+ 134 0022 81BB      		out 49-0x20,r24
+ 135               	.L3:
+ 137               	.LM9:
+ 138 0024 15BA      		out 53-0x20,__zero_reg__
+ 140               	.LM10:
+ 141 0026 1BBA      		out 59-0x20,__zero_reg__
+ 143               	.LM11:
+ 144 0028 18BA      		out 56-0x20,__zero_reg__
+ 146               	.LM12:
+ 147 002a 12BA      		out 50-0x20,__zero_reg__
+ 149               	.LM13:
+ 150 002c 88EC      		ldi r24,lo8(-56)
+ 151 002e 0E94 0000 		call delay_ms
+ 153               	.LM14:
+ 154 0032 8FEF      		ldi r24,lo8(-1)
+ 155 0034 8BBB      		out 59-0x20,r24
+ 157               	.LM15:
+ 158 0036 88BB      		out 56-0x20,r24
+ 160               	.LM16:
+ 161 0038 85BB      		out 53-0x20,r24
+ 163               	.LM17:
+ 164 003a 82BB      		out 50-0x20,r24
+ 166               	.LM18:
+ 167 003c 88EC      		ldi r24,lo8(-56)
+ 168 003e 0E94 0000 		call delay_ms
+ 169 0042 F0CF      		rjmp .L3
+ 170               	/* epilogue: frame size=0 */
+ 171               	/* epilogue: noreturn */
+ 172               	/* epilogue end (size=0) */
+ 173               	/* function main size 25 (21) */
+ 175               	.Lscope1:
+ 176               		.text
+ 178               	Letext:
+ 179               	/* File "bibin.c": code   48 = 0x0030 (  43), prologues   4, epilogues   1 */
+DEFINED SYMBOLS
+                            *ABS*:00000000 bibin.c
+D:\DOCUME~1\ADMINI~1\LOCALS~1\Temp/cckvaaaa.s:3      *ABS*:0000003f __SREG__
+D:\DOCUME~1\ADMINI~1\LOCALS~1\Temp/cckvaaaa.s:4      *ABS*:0000003e __SP_H__
+D:\DOCUME~1\ADMINI~1\LOCALS~1\Temp/cckvaaaa.s:5      *ABS*:0000003d __SP_L__
+D:\DOCUME~1\ADMINI~1\LOCALS~1\Temp/cckvaaaa.s:6      *ABS*:00000000 __tmp_reg__
+D:\DOCUME~1\ADMINI~1\LOCALS~1\Temp/cckvaaaa.s:7      *ABS*:00000001 __zero_reg__
+D:\DOCUME~1\ADMINI~1\LOCALS~1\Temp/cckvaaaa.s:77     .text:00000000 delay_ms
+D:\DOCUME~1\ADMINI~1\LOCALS~1\Temp/cckvaaaa.s:90     .text:00000004 L_dl17
+D:\DOCUME~1\ADMINI~1\LOCALS~1\Temp/cckvaaaa.s:93     .text:00000008 L_dl27
+D:\DOCUME~1\ADMINI~1\LOCALS~1\Temp/cckvaaaa.s:113    .text:00000012 main
+D:\DOCUME~1\ADMINI~1\LOCALS~1\Temp/cckvaaaa.s:178    .text:00000044 Letext
+
+UNDEFINED SYMBOLS
+__do_copy_data
+__do_clear_bss
+__stack

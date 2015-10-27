@@ -1,0 +1,47 @@
+<ASSEMBLER_INFO>
+ <VERSION>2.1.2</VERSION>
+ <DEVICE>Unknown</DEVICE>
+ <WORKING_DIR>C:\project\check</WORKING_DIR>
+ <INCLUDE_PATH>
+  <DIR>C:\Program Files\Atmel\AVR Tools\AvrAssembler2\Appnotes</DIR>
+ </INCLUDE_PATH>
+ <SOURCE_FILE>C:\project\check\check.asm</SOURCE_FILE>
+ <INCLUDED_FILES>
+ </INCLUDED_FILES>
+ <OBJECT_FILES>
+  <FILE>C:\project\check\check.obj</FILE>
+ </OBJECT_FILES>
+ <HEX_FILES>
+  <FILE>C:\project\check\check.hex</FILE>
+ </HEX_FILES>
+ <OUTPUT_FILES>
+  <FILE>C:\project\check\check.map</FILE>
+ </OUTPUT_FILES>
+ <LABELS>
+  <LCD_Intia><FILE>C:\project\check\check.asm</FILE><LINE>174</LINE></LCD_Intia>
+  <here12><FILE>C:\project\check\check.asm</FILE><LINE>50</LINE></here12>
+  <LCD_Cmnd_Out><FILE>C:\project\check\check.asm</FILE><LINE>150</LINE></LCD_Cmnd_Out>
+  <data><FILE>C:\project\check\check.asm</FILE><LINE>207</LINE></data>
+  <loadbyte><FILE>C:\project\check\check.asm</FILE><LINE>134</LINE></loadbyte>
+  <data1><FILE>C:\project\check\check.asm</FILE><LINE>211</LINE></data1>
+  <delay1s1><FILE>C:\project\check\check.asm</FILE><LINE>248</LINE></delay1s1>
+  <data2><FILE>C:\project\check\check.asm</FILE><LINE>215</LINE></data2>
+  <delay1><FILE>C:\project\check\check.asm</FILE><LINE>197</LINE></delay1>
+  <data3><FILE>C:\project\check\check.asm</FILE><LINE>218</LINE></data3>
+  <here><FILE>C:\project\check\check.asm</FILE><LINE>130</LINE></here>
+  <next><FILE>C:\project\check\check.asm</FILE><LINE>135</LINE></next>
+  <here1><FILE>C:\project\check\check.asm</FILE><LINE>145</LINE></here1>
+  <LCD_Data_Out><FILE>C:\project\check\check.asm</FILE><LINE>160</LINE></LCD_Data_Out>
+  <LCD_Busy_Chk><FILE>C:\project\check\check.asm</FILE><LINE>169</LINE></LCD_Busy_Chk>
+  <delay><FILE>C:\project\check\check.asm</FILE><LINE>185</LINE></delay>
+  <delay_loop><FILE>C:\project\check\check.asm</FILE><LINE>188</LINE></delay_loop>
+  <delay_loop1><FILE>C:\project\check\check.asm</FILE><LINE>200</LINE></delay_loop1>
+  <delay1s><FILE>C:\project\check\check.asm</FILE><LINE>226</LINE></delay1s>
+  <WGLOOP04><FILE>C:\project\check\check.asm</FILE><LINE>228</LINE></WGLOOP04>
+  <WGLOOP14><FILE>C:\project\check\check.asm</FILE><LINE>229</LINE></WGLOOP14>
+  <WGLOOP24><FILE>C:\project\check\check.asm</FILE><LINE>230</LINE></WGLOOP24>
+  <WGLOOP06><FILE>C:\project\check\check.asm</FILE><LINE>250</LINE></WGLOOP06>
+  <WGLOOP16><FILE>C:\project\check\check.asm</FILE><LINE>251</LINE></WGLOOP16>
+  <WGLOOP26><FILE>C:\project\check\check.asm</FILE><LINE>252</LINE></WGLOOP26>
+ </LABELS>
+</ASSEMBLER_INFO>

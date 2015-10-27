@@ -1,0 +1,50 @@
+  #define F_CPU 16000000               //CHECK!!!!!!!!!!!!!!!!!
+
+#include<avr/io.h>
+#include<util/delay.h>
+#include<avr/interrupt.h>
+#include<inttypes.h>
+
+#define BIT(b) (1<<(b))
+#define CLEARBIT(x,b) x&=~b;
+#define SETBIT(x,b) x|=b;
+#define CHECKBIT(x,b) (x)&(b)
+
+
+
+
+                  
+
+void main()
+{
+
+double servo=0;
+double adc=0,compl_servo;
+unsigned char lights;
+
+DDRA=0x00;
+DDRD=0xFF;
+DDRB=0xFF;
+ADMUX = 0b00100111;
+ADCSRA = 0b10000110;
+
+	while (1)
+	{
+		SETBIT (ADCSRA, BIT(6));
+		while (CHECKBIT (ADCSRA, BIT(6)));
+		adc = ADCH;
+		lights = ADCH;
+		
+		servo = (1) + ((adc/255));
+		compl_servo = 20-servo;
+		
+		PORTD=0xFF;
+		_delay_ms(servo);
+		PORTD=0x00;
+		_delay_ms(compl_servo);
+		
+		PORTB=lights;
+		
+		
+	}
+}

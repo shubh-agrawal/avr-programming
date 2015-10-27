@@ -1,0 +1,302 @@
+
+bibin.elf:     file format elf32-avr
+
+Sections:
+Idx Name          Size      VMA       LMA       File off  Algn
+  0 .text         0000018e  00000000  00000000  00000094  2**0
+                  CONTENTS, ALLOC, LOAD, READONLY, CODE
+  1 .data         00000000  00800060  0000018e  00000222  2**0
+                  CONTENTS, ALLOC, LOAD, DATA
+  2 .bss          00000000  00800060  0000018e  00000222  2**0
+                  ALLOC
+  3 .noinit       00000000  00800060  00800060  00000222  2**0
+                  CONTENTS
+  4 .eeprom       00000000  00810000  00810000  00000222  2**0
+                  CONTENTS
+  5 .stab         000008a0  00000000  00000000  00000224  2**2
+                  CONTENTS, READONLY, DEBUGGING
+  6 .stabstr      0000077a  00000000  00000000  00000ac4  2**0
+                  CONTENTS, READONLY, DEBUGGING
+Disassembly of section .text:
+
+00000000 <__vectors>:
+   0:	0c 94 2a 00 	jmp	0x54 <__ctors_end>
+   4:	0c 94 45 00 	jmp	0x8a <__bad_interrupt>
+   8:	0c 94 45 00 	jmp	0x8a <__bad_interrupt>
+   c:	0c 94 45 00 	jmp	0x8a <__bad_interrupt>
+  10:	0c 94 45 00 	jmp	0x8a <__bad_interrupt>
+  14:	0c 94 45 00 	jmp	0x8a <__bad_interrupt>
+  18:	0c 94 45 00 	jmp	0x8a <__bad_interrupt>
+  1c:	0c 94 45 00 	jmp	0x8a <__bad_interrupt>
+  20:	0c 94 45 00 	jmp	0x8a <__bad_interrupt>
+  24:	0c 94 45 00 	jmp	0x8a <__bad_interrupt>
+  28:	0c 94 45 00 	jmp	0x8a <__bad_interrupt>
+  2c:	0c 94 45 00 	jmp	0x8a <__bad_interrupt>
+  30:	0c 94 45 00 	jmp	0x8a <__bad_interrupt>
+  34:	0c 94 45 00 	jmp	0x8a <__bad_interrupt>
+  38:	0c 94 45 00 	jmp	0x8a <__bad_interrupt>
+  3c:	0c 94 45 00 	jmp	0x8a <__bad_interrupt>
+  40:	0c 94 45 00 	jmp	0x8a <__bad_interrupt>
+  44:	0c 94 45 00 	jmp	0x8a <__bad_interrupt>
+  48:	0c 94 45 00 	jmp	0x8a <__bad_interrupt>
+  4c:	0c 94 45 00 	jmp	0x8a <__bad_interrupt>
+  50:	0c 94 45 00 	jmp	0x8a <__bad_interrupt>
+
+00000054 <__ctors_end>:
+  54:	11 24       	eor	r1, r1
+  56:	1f be       	out	0x3f, r1	; 63
+  58:	cf e5       	ldi	r28, 0x5F	; 95
+  5a:	d8 e0       	ldi	r29, 0x08	; 8
+  5c:	de bf       	out	0x3e, r29	; 62
+  5e:	cd bf       	out	0x3d, r28	; 61
+
+00000060 <__do_copy_data>:
+  60:	10 e0       	ldi	r17, 0x00	; 0
+  62:	a0 e6       	ldi	r26, 0x60	; 96
+  64:	b0 e0       	ldi	r27, 0x00	; 0
+  66:	ee e8       	ldi	r30, 0x8E	; 142
+  68:	f1 e0       	ldi	r31, 0x01	; 1
+  6a:	02 c0       	rjmp	.+4      	; 0x70 <.do_copy_data_start>
+
+0000006c <.do_copy_data_loop>:
+  6c:	05 90       	lpm	r0, Z+
+  6e:	0d 92       	st	X+, r0
+
+00000070 <.do_copy_data_start>:
+  70:	a0 36       	cpi	r26, 0x60	; 96
+  72:	b1 07       	cpc	r27, r17
+  74:	d9 f7       	brne	.-10     	; 0x6c <.do_copy_data_loop>
+
+00000076 <__do_clear_bss>:
+  76:	10 e0       	ldi	r17, 0x00	; 0
+  78:	a0 e6       	ldi	r26, 0x60	; 96
+  7a:	b0 e0       	ldi	r27, 0x00	; 0
+  7c:	01 c0       	rjmp	.+2      	; 0x80 <.do_clear_bss_start>
+
+0000007e <.do_clear_bss_loop>:
+  7e:	1d 92       	st	X+, r1
+
+00000080 <.do_clear_bss_start>:
+  80:	a0 36       	cpi	r26, 0x60	; 96
+  82:	b1 07       	cpc	r27, r17
+  84:	e1 f7       	brne	.-8      	; 0x7e <.do_clear_bss_loop>
+  86:	0c 94 b2 00 	jmp	0x164 <main>
+
+0000008a <__bad_interrupt>:
+  8a:	0c 94 00 00 	jmp	0x0 <__vectors>
+
+0000008e <Init_Ports>:
+-----------------------------------------------------------------*/
+  void Init_Ports(void)
+  
+  {
+  DATA_DDR = DATA_MASK; //for setting data pin's for output
+  8e:	8f ef       	ldi	r24, 0xFF	; 255
+  90:	84 bb       	out	0x14, r24	; 20
+  92:	08 95       	ret
+
+00000094 <Display>:
+  }
+  
+/*----------------------------------------------------------------
+-----------------FUNCTIONS TO DISPLAY VALUES----------------------
+-----------------------------------------------------------------*/  
+  void Display(int a)
+  {
+  switch(a)
+  94:	84 30       	cpi	r24, 0x04	; 4
+  96:	91 05       	cpc	r25, r1
+  98:	d9 f1       	breq	.+118    	; 0x110 <Display+0x7c>
+  9a:	85 30       	cpi	r24, 0x05	; 5
+  9c:	91 05       	cpc	r25, r1
+  9e:	7c f4       	brge	.+30     	; 0xbe <Display+0x2a>
+  a0:	81 30       	cpi	r24, 0x01	; 1
+  a2:	91 05       	cpc	r25, r1
+  a4:	11 f1       	breq	.+68     	; 0xea <Display+0x56>
+  a6:	82 30       	cpi	r24, 0x02	; 2
+  a8:	91 05       	cpc	r25, r1
+  aa:	1c f4       	brge	.+6      	; 0xb2 <Display+0x1e>
+  ac:	89 2b       	or	r24, r25
+  ae:	c9 f0       	breq	.+50     	; 0xe2 <Display+0x4e>
+  b0:	08 95       	ret
+  b2:	82 30       	cpi	r24, 0x02	; 2
+  b4:	91 05       	cpc	r25, r1
+  b6:	01 f1       	breq	.+64     	; 0xf8 <Display+0x64>
+  b8:	03 97       	sbiw	r24, 0x03	; 3
+  ba:	21 f1       	breq	.+72     	; 0x104 <Display+0x70>
+  bc:	08 95       	ret
+  be:	87 30       	cpi	r24, 0x07	; 7
+  c0:	91 05       	cpc	r25, r1
+  c2:	c1 f1       	breq	.+112    	; 0x134 <Display+0xa0>
+  c4:	88 30       	cpi	r24, 0x08	; 8
+  c6:	91 05       	cpc	r25, r1
+  c8:	34 f4       	brge	.+12     	; 0xd6 <Display+0x42>
+  ca:	85 30       	cpi	r24, 0x05	; 5
+  cc:	91 05       	cpc	r25, r1
+  ce:	31 f1       	breq	.+76     	; 0x11c <Display+0x88>
+  d0:	06 97       	sbiw	r24, 0x06	; 6
+  d2:	51 f1       	breq	.+84     	; 0x128 <Display+0x94>
+  d4:	08 95       	ret
+  d6:	88 30       	cpi	r24, 0x08	; 8
+  d8:	91 05       	cpc	r25, r1
+  da:	91 f1       	breq	.+100    	; 0x140 <Display+0xac>
+  dc:	09 97       	sbiw	r24, 0x09	; 9
+  de:	99 f1       	breq	.+102    	; 0x146 <Display+0xb2>
+  e0:	08 95       	ret
+  {
+  case 0:  
+			DATA_PORT|=_BV(Pin_g);
+  e2:	ae 9a       	sbi	0x15, 6	; 21
+			DATA_PORT&=~(_BV(Pin_a)|_BV(Pin_b)|_BV(Pin_c)|_BV(Pin_d)|_BV(Pin_e)|_BV(Pin_f));
+  e4:	85 b3       	in	r24, 0x15	; 21
+  e6:	80 7c       	andi	r24, 0xC0	; 192
+  e8:	05 c0       	rjmp	.+10     	; 0xf4 <Display+0x60>
+			break;
+			
+  case 1:
+			
+			DATA_PORT|=(_BV(Pin_a)|_BV(Pin_d)|_BV(Pin_e)|_BV(Pin_f)|_BV(Pin_g));
+  ea:	85 b3       	in	r24, 0x15	; 21
+  ec:	89 67       	ori	r24, 0x79	; 121
+  ee:	85 bb       	out	0x15, r24	; 21
+			DATA_PORT&=~(_BV(Pin_b)|_BV(Pin_c));
+  f0:	85 b3       	in	r24, 0x15	; 21
+  f2:	89 7f       	andi	r24, 0xF9	; 249
+  f4:	85 bb       	out	0x15, r24	; 21
+			break;
+  f6:	08 95       	ret
+			
+  case 2:  
+			
+  
+			DATA_PORT|=(_BV(Pin_c)|_BV(Pin_f));
+  f8:	85 b3       	in	r24, 0x15	; 21
+  fa:	84 62       	ori	r24, 0x24	; 36
+  fc:	85 bb       	out	0x15, r24	; 21
+			DATA_PORT&=~(_BV(Pin_b)|_BV(Pin_d)|_BV(Pin_e)|_BV(Pin_a)|_BV(Pin_g));
+  fe:	85 b3       	in	r24, 0x15	; 21
+ 100:	84 7a       	andi	r24, 0xA4	; 164
+ 102:	f8 cf       	rjmp	.-16     	; 0xf4 <Display+0x60>
+			break;
+			
+	
+  case 3:  
+			DATA_PORT|=(_BV(Pin_e)|_BV(Pin_f));
+ 104:	85 b3       	in	r24, 0x15	; 21
+ 106:	80 63       	ori	r24, 0x30	; 48
+ 108:	85 bb       	out	0x15, r24	; 21
+			DATA_PORT&=~(_BV(Pin_c)|_BV(Pin_d)|_BV(Pin_a)|_BV(Pin_b)|_BV(Pin_g));
+ 10a:	85 b3       	in	r24, 0x15	; 21
+ 10c:	80 7b       	andi	r24, 0xB0	; 176
+ 10e:	f2 cf       	rjmp	.-28     	; 0xf4 <Display+0x60>
+			break;
+			
+
+  case 4:  
+			DATA_PORT|=(_BV(Pin_a)|_BV(Pin_d)|_BV(Pin_e));
+ 110:	85 b3       	in	r24, 0x15	; 21
+ 112:	89 61       	ori	r24, 0x19	; 25
+ 114:	85 bb       	out	0x15, r24	; 21
+			DATA_PORT&=~(_BV(Pin_c)|_BV(Pin_b)|_BV(Pin_f)|_BV(Pin_g));
+ 116:	85 b3       	in	r24, 0x15	; 21
+ 118:	89 79       	andi	r24, 0x99	; 153
+ 11a:	ec cf       	rjmp	.-40     	; 0xf4 <Display+0x60>
+			break;
+			
+  case 5:  
+			DATA_PORT|=(_BV(Pin_b)|_BV(Pin_e));
+ 11c:	85 b3       	in	r24, 0x15	; 21
+ 11e:	82 61       	ori	r24, 0x12	; 18
+ 120:	85 bb       	out	0x15, r24	; 21
+			DATA_PORT&=~(_BV(Pin_a)|_BV(Pin_c)|_BV(Pin_d)|_BV(Pin_f)|_BV(Pin_g));
+ 122:	85 b3       	in	r24, 0x15	; 21
+ 124:	82 79       	andi	r24, 0x92	; 146
+ 126:	e6 cf       	rjmp	.-52     	; 0xf4 <Display+0x60>
+			break;
+			
+  case 6:  
+			DATA_PORT|=(_BV(Pin_a)|_BV(Pin_b));
+ 128:	85 b3       	in	r24, 0x15	; 21
+ 12a:	83 60       	ori	r24, 0x03	; 3
+ 12c:	85 bb       	out	0x15, r24	; 21
+			DATA_PORT&=~(_BV(Pin_c)|_BV(Pin_d)|_BV(Pin_f)|_BV(Pin_g)|_BV(Pin_e));
+ 12e:	85 b3       	in	r24, 0x15	; 21
+ 130:	83 78       	andi	r24, 0x83	; 131
+ 132:	e0 cf       	rjmp	.-64     	; 0xf4 <Display+0x60>
+			break;
+			
+  case 7:  
+			DATA_PORT|=(_BV(Pin_d)|_BV(Pin_e)|_BV(Pin_f)|_BV(Pin_g));
+ 134:	85 b3       	in	r24, 0x15	; 21
+ 136:	88 67       	ori	r24, 0x78	; 120
+ 138:	85 bb       	out	0x15, r24	; 21
+			DATA_PORT&=~(_BV(Pin_a)|_BV(Pin_c)|_BV(Pin_b));
+ 13a:	85 b3       	in	r24, 0x15	; 21
+ 13c:	88 7f       	andi	r24, 0xF8	; 248
+ 13e:	da cf       	rjmp	.-76     	; 0xf4 <Display+0x60>
+			break;
+			
+  case 8:  
+			DATA_PORT&=~(_BV(Pin_a)|_BV(Pin_d)|_BV(Pin_e)|_BV(Pin_c)|_BV(Pin_b)|_BV(Pin_f)|_BV(Pin_g));
+ 140:	85 b3       	in	r24, 0x15	; 21
+ 142:	80 78       	andi	r24, 0x80	; 128
+ 144:	d7 cf       	rjmp	.-82     	; 0xf4 <Display+0x60>
+			break;
+		
+  case 9:  
+			DATA_PORT|=(_BV(Pin_d)|_BV(Pin_e));
+ 146:	85 b3       	in	r24, 0x15	; 21
+ 148:	88 61       	ori	r24, 0x18	; 24
+ 14a:	85 bb       	out	0x15, r24	; 21
+			DATA_PORT&=~(_BV(Pin_a)|_BV(Pin_c)|_BV(Pin_b)|_BV(Pin_f)|_BV(Pin_g));
+ 14c:	85 b3       	in	r24, 0x15	; 21
+ 14e:	88 79       	andi	r24, 0x98	; 152
+ 150:	d1 cf       	rjmp	.-94     	; 0xf4 <Display+0x60>
+
+00000152 <delay_ms>:
+			break;
+					
+	}}
+
+/*----------------------------------------------------------------
+--------FUNCTION TO GENERATE DELAY IN MILLISECONDS----------------
+-----------------------------------------------------------------*/
+void delay_ms(unsigned char time_ms)
+{
+	unsigned short delay_count = F_CPU / 400;
+ 152:	24 ec       	ldi	r18, 0xC4	; 196
+ 154:	39 e0       	ldi	r19, 0x09	; 9
+
+00000156 <L_dl1199>:
+
+	unsigned short cnt;
+	asm volatile ("\n"
+ 156:	e2 2f       	mov	r30, r18
+ 158:	f3 2f       	mov	r31, r19
+
+0000015a <L_dl2199>:
+ 15a:	31 97       	sbiw	r30, 0x01	; 1
+ 15c:	f1 f7       	brne	.-4      	; 0x15a <L_dl2199>
+ 15e:	8a 95       	dec	r24
+ 160:	d1 f7       	brne	.-12     	; 0x156 <L_dl1199>
+ 162:	08 95       	ret
+
+00000164 <main>:
+ 164:	cf e5       	ldi	r28, 0x5F	; 95
+ 166:	d8 e0       	ldi	r29, 0x08	; 8
+ 168:	de bf       	out	0x3e, r29	; 62
+ 16a:	cd bf       	out	0x3d, r28	; 61
+ 16c:	c0 e0       	ldi	r28, 0x00	; 0
+ 16e:	d0 e0       	ldi	r29, 0x00	; 0
+ 170:	0e 94 47 00 	call	0x8e <Init_Ports>
+ 174:	ce 01       	movw	r24, r28
+ 176:	0e 94 4a 00 	call	0x94 <Display>
+ 17a:	21 96       	adiw	r28, 0x01	; 1
+ 17c:	ca 30       	cpi	r28, 0x0A	; 10
+ 17e:	d1 05       	cpc	r29, r1
+ 180:	10 f0       	brcs	.+4      	; 0x186 <main+0x22>
+ 182:	c0 e0       	ldi	r28, 0x00	; 0
+ 184:	d0 e0       	ldi	r29, 0x00	; 0
+ 186:	84 ef       	ldi	r24, 0xF4	; 244
+ 188:	0e 94 a9 00 	call	0x152 <delay_ms>
+ 18c:	f3 cf       	rjmp	.-26     	; 0x174 <main+0x10>

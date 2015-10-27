@@ -1,0 +1,48 @@
+
+AVRASM ver. 2.1.2  C:\project\check\check.asm Mon Apr 24 23:01:25 2006
+
+
+EQU  LCD_DPort    0000001b
+EQU  ddrc         00000014
+EQU  ddra         0000001a
+EQU  ddrb         00000017
+EQU  ddrd         00000011
+EQU  portb        00000018
+EQU  portc        00000015
+EQU  porta        0000001b
+EQU  portd        00000012
+EQU  pina         00000019
+EQU  pinb         00000016
+EQU  pinc         00000013
+EQU  pind         00000010
+EQU  LCD_CPort    00000012
+EQU  LCD_Rs       00000004
+EQU  LCD_Rw       00000005
+EQU  LCD_En       00000006
+EQU  sph          0000003e
+EQU  spl          0000003d
+CSEG LCD_Intia    00000057
+CSEG here12       00000009
+CSEG LCD_Cmnd_Out 00000047
+CSEG data         0000006e
+CSEG loadbyte     0000003c
+CSEG data1        00000075
+CSEG delay1s1     00000090
+CSEG data2        00000078
+CSEG delay1       00000067
+CSEG data3        0000007f
+CSEG here         0000003b
+CSEG next         0000003c
+CSEG here1        00000046
+CSEG LCD_Data_Out 0000004e
+CSEG LCD_Busy_Chk 00000055
+CSEG delay        00000060
+CSEG delay_loop   00000062
+CSEG delay_loop1  00000069
+CSEG delay1s      00000085
+CSEG WGLOOP04     00000086
+CSEG WGLOOP14     00000087
+CSEG WGLOOP24     00000088
+CSEG WGLOOP06     00000091
+CSEG WGLOOP16     00000092
+CSEG WGLOOP26     00000093

@@ -1,0 +1,378 @@
+   1               		.file	"bibin.c"
+   2               		.arch atmega32
+   3               	__SREG__ = 0x3f
+   4               	__SP_H__ = 0x3e
+   5               	__SP_L__ = 0x3d
+   6               	__tmp_reg__ = 0
+   7               	__zero_reg__ = 1
+   8               		.global __do_copy_data
+   9               		.global __do_clear_bss
+  11               		.text
+  12               	.Ltext0:
+  74               	.global	Init_Ports
+  76               	Init_Ports:
+   1:bibin.c       **** /*----------------------------------------------------------------
+   2:bibin.c       **** -----------------HEADER FILES-------------------------------------
+   3:bibin.c       **** -----------------------------------------------------------------*/
+   4:bibin.c       **** #include<avr/io.h>
+   5:bibin.c       **** 
+   6:bibin.c       **** /*----------------------------------------------------------------
+   7:bibin.c       **** -------------CONNECTION BETWEEN 7 segment AND ATMEGA32-----------
+   8:bibin.c       **** -----------------------------------------------------------------*/
+   9:bibin.c       **** #define DATA_DDR	 DDRC
+  10:bibin.c       **** #define DATA_PORT 	 PORTC
+  11:bibin.c       **** #define Pin_a     		0
+  12:bibin.c       **** #define Pin_b     		1
+  13:bibin.c       **** #define Pin_c     		2
+  14:bibin.c       **** #define Pin_d     		3
+  15:bibin.c       **** #define Pin_e     		4
+  16:bibin.c       **** #define Pin_f     		5
+  17:bibin.c       **** #define Pin_g     		6
+  18:bibin.c       **** #define Pin_Dec         7
+  19:bibin.c       **** #define DATA_MASK     0XFF
+  20:bibin.c       **** 
+  21:bibin.c       **** 
+  22:bibin.c       **** 
+  23:bibin.c       **** 
+  24:bibin.c       **** /*----------------------------------------------------------------
+  25:bibin.c       **** -----------------FUNCTIONS---------------------------------------
+  26:bibin.c       **** -----------------------------------------------------------------*/
+  27:bibin.c       **** void Init_Ports(void);
+  28:bibin.c       **** void Display(int a);
+  29:bibin.c       **** void delay_ms(unsigned char time_ms);
+  30:bibin.c       **** 
+  31:bibin.c       ****   void main(void)
+  32:bibin.c       ****   
+  33:bibin.c       ****   {
+  34:bibin.c       ****   unsigned int i;
+  35:bibin.c       ****   i=0;
+  36:bibin.c       ****   Init_Ports();
+  37:bibin.c       ****   do
+  38:bibin.c       ****   {
+  39:bibin.c       ****   Display(i);
+  40:bibin.c       ****   i++;
+  41:bibin.c       ****   if(i>9) i=0;
+  42:bibin.c       ****   delay_ms(500);
+  43:bibin.c       ****   }
+  44:bibin.c       ****   while(1);
+  45:bibin.c       ****     
+  46:bibin.c       ****  } 
+  47:bibin.c       ****   
+  48:bibin.c       **** /*----------------------------------------------------------------
+  49:bibin.c       **** -----------------FUNCTIONS TO INITIALIZE PORTS--------------------
+  50:bibin.c       **** -----------------------------------------------------------------*/
+  51:bibin.c       ****   void Init_Ports(void)
+  52:bibin.c       ****   
+  53:bibin.c       ****   {
+  78               	.LM1:
+  79               	/* prologue: frame size=0 */
+  80               	/* prologue end (size=0) */
+  54:bibin.c       ****   DATA_DDR = DATA_MASK; //for setting data pin's for output
+  82               	.LM2:
+  83 0000 8FEF      		ldi r24,lo8(-1)
+  84 0002 84BB      		out 52-0x20,r24
+  85               	/* epilogue: frame size=0 */
+  86 0004 0895      		ret
+  87               	/* epilogue end (size=1) */
+  88               	/* function Init_Ports size 3 (2) */
+  90               	.Lscope0:
+  93               	.global	Display
+  95               	Display:
+  55:bibin.c       ****   }
+  56:bibin.c       ****   
+  57:bibin.c       **** /*----------------------------------------------------------------
+  58:bibin.c       **** -----------------FUNCTIONS TO DISPLAY VALUES----------------------
+  59:bibin.c       **** -----------------------------------------------------------------*/  
+  60:bibin.c       ****   void Display(int a)
+  61:bibin.c       ****   {
+  97               	.LM3:
+  98               	/* prologue: frame size=0 */
+  99               	/* prologue end (size=0) */
+  62:bibin.c       ****   switch(a)
+ 101               	.LM4:
+ 102 0006 8430      		cpi r24,4
+ 103 0008 9105      		cpc r25,__zero_reg__
+ 104 000a D9F1      		breq .L8
+ 106               	.LM5:
+ 107 000c 8530      		cpi r24,5
+ 108 000e 9105      		cpc r25,__zero_reg__
+ 109 0010 7CF4      		brge .L14
+ 110 0012 8130      		cpi r24,1
+ 111 0014 9105      		cpc r25,__zero_reg__
+ 112 0016 11F1      		breq .L5
+ 113 0018 8230      		cpi r24,2
+ 114 001a 9105      		cpc r25,__zero_reg__
+ 115 001c 1CF4      		brge .L15
+ 116 001e 892B      		or r24,r25
+ 117 0020 C9F0      		breq .L4
+ 118 0022 0895      		ret
+ 119               	.L15:
+ 120 0024 8230      		cpi r24,2
+ 121 0026 9105      		cpc r25,__zero_reg__
+ 122 0028 01F1      		breq .L6
+ 123 002a 0397      		sbiw r24,3
+ 124 002c 21F1      		breq .L7
+ 125 002e 0895      		ret
+ 126               	.L14:
+ 127 0030 8730      		cpi r24,7
+ 128 0032 9105      		cpc r25,__zero_reg__
+ 129 0034 C1F1      		breq .L11
+ 130 0036 8830      		cpi r24,8
+ 131 0038 9105      		cpc r25,__zero_reg__
+ 132 003a 34F4      		brge .L16
+ 133 003c 8530      		cpi r24,5
+ 134 003e 9105      		cpc r25,__zero_reg__
+ 135 0040 31F1      		breq .L9
+ 136 0042 0697      		sbiw r24,6
+ 137 0044 51F1      		breq .L10
+ 138 0046 0895      		ret
+ 139               	.L16:
+ 140 0048 8830      		cpi r24,8
+ 141 004a 9105      		cpc r25,__zero_reg__
+ 142 004c 91F1      		breq .L12
+ 143 004e 0997      		sbiw r24,9
+ 144 0050 99F1      		breq .L13
+ 145 0052 0895      		ret
+ 146               	.L4:
+  63:bibin.c       ****   {
+  64:bibin.c       ****   case 0:  
+  65:bibin.c       **** 			DATA_PORT|=_BV(Pin_g);
+ 148               	.LM6:
+ 149 0054 AE9A      		sbi 53-0x20,6
+  66:bibin.c       **** 			DATA_PORT&=~(_BV(Pin_a)|_BV(Pin_b)|_BV(Pin_c)|_BV(Pin_d)|_BV(Pin_e)|_BV(Pin_f));
+ 151               	.LM7:
+ 152 0056 85B3      		in r24,53-0x20
+ 153 0058 807C      		andi r24,lo8(-64)
+ 154 005a 05C0      		rjmp .L17
+ 155               	.L5:
+  67:bibin.c       **** 			break;
+  68:bibin.c       **** 			
+  69:bibin.c       ****   case 1:
+  70:bibin.c       **** 			
+  71:bibin.c       **** 			DATA_PORT|=(_BV(Pin_a)|_BV(Pin_d)|_BV(Pin_e)|_BV(Pin_f)|_BV(Pin_g));
+ 157               	.LM8:
+ 158 005c 85B3      		in r24,53-0x20
+ 159 005e 8967      		ori r24,lo8(121)
+ 160 0060 85BB      		out 53-0x20,r24
+  72:bibin.c       **** 			DATA_PORT&=~(_BV(Pin_b)|_BV(Pin_c));
+ 162               	.LM9:
+ 163 0062 85B3      		in r24,53-0x20
+ 164 0064 897F      		andi r24,lo8(-7)
+ 165               	.L17:
+ 166 0066 85BB      		out 53-0x20,r24
+  73:bibin.c       **** 			break;
+ 168               	.LM10:
+ 169 0068 0895      		ret
+ 170               	.L6:
+  74:bibin.c       **** 			
+  75:bibin.c       ****   case 2:  
+  76:bibin.c       **** 			
+  77:bibin.c       ****   
+  78:bibin.c       **** 			DATA_PORT|=(_BV(Pin_c)|_BV(Pin_f));
+ 172               	.LM11:
+ 173 006a 85B3      		in r24,53-0x20
+ 174 006c 8462      		ori r24,lo8(36)
+ 175 006e 85BB      		out 53-0x20,r24
+  79:bibin.c       **** 			DATA_PORT&=~(_BV(Pin_b)|_BV(Pin_d)|_BV(Pin_e)|_BV(Pin_a)|_BV(Pin_g));
+ 177               	.LM12:
+ 178 0070 85B3      		in r24,53-0x20
+ 179 0072 847A      		andi r24,lo8(-92)
+ 180 0074 F8CF      		rjmp .L17
+ 181               	.L7:
+  80:bibin.c       **** 			break;
+  81:bibin.c       **** 			
+  82:bibin.c       **** 	
+  83:bibin.c       ****   case 3:  
+  84:bibin.c       **** 			DATA_PORT|=(_BV(Pin_e)|_BV(Pin_f));
+ 183               	.LM13:
+ 184 0076 85B3      		in r24,53-0x20
+ 185 0078 8063      		ori r24,lo8(48)
+ 186 007a 85BB      		out 53-0x20,r24
+  85:bibin.c       **** 			DATA_PORT&=~(_BV(Pin_c)|_BV(Pin_d)|_BV(Pin_a)|_BV(Pin_b)|_BV(Pin_g));
+ 188               	.LM14:
+ 189 007c 85B3      		in r24,53-0x20
+ 190 007e 807B      		andi r24,lo8(-80)
+ 191 0080 F2CF      		rjmp .L17
+ 192               	.L8:
+  86:bibin.c       **** 			break;
+  87:bibin.c       **** 			
+  88:bibin.c       **** 
+  89:bibin.c       ****   case 4:  
+  90:bibin.c       **** 			DATA_PORT|=(_BV(Pin_a)|_BV(Pin_d)|_BV(Pin_e));
+ 194               	.LM15:
+ 195 0082 85B3      		in r24,53-0x20
+ 196 0084 8961      		ori r24,lo8(25)
+ 197 0086 85BB      		out 53-0x20,r24
+  91:bibin.c       **** 			DATA_PORT&=~(_BV(Pin_c)|_BV(Pin_b)|_BV(Pin_f)|_BV(Pin_g));
+ 199               	.LM16:
+ 200 0088 85B3      		in r24,53-0x20
+ 201 008a 8979      		andi r24,lo8(-103)
+ 202 008c ECCF      		rjmp .L17
+ 203               	.L9:
+  92:bibin.c       **** 			break;
+  93:bibin.c       **** 			
+  94:bibin.c       ****   case 5:  
+  95:bibin.c       **** 			DATA_PORT|=(_BV(Pin_b)|_BV(Pin_e));
+ 205               	.LM17:
+ 206 008e 85B3      		in r24,53-0x20
+ 207 0090 8261      		ori r24,lo8(18)
+ 208 0092 85BB      		out 53-0x20,r24
+  96:bibin.c       **** 			DATA_PORT&=~(_BV(Pin_a)|_BV(Pin_c)|_BV(Pin_d)|_BV(Pin_f)|_BV(Pin_g));
+ 210               	.LM18:
+ 211 0094 85B3      		in r24,53-0x20
+ 212 0096 8279      		andi r24,lo8(-110)
+ 213 0098 E6CF      		rjmp .L17
+ 214               	.L10:
+  97:bibin.c       **** 			break;
+  98:bibin.c       **** 			
+  99:bibin.c       ****   case 6:  
+ 100:bibin.c       **** 			DATA_PORT|=(_BV(Pin_a)|_BV(Pin_b));
+ 216               	.LM19:
+ 217 009a 85B3      		in r24,53-0x20
+ 218 009c 8360      		ori r24,lo8(3)
+ 219 009e 85BB      		out 53-0x20,r24
+ 101:bibin.c       **** 			DATA_PORT&=~(_BV(Pin_c)|_BV(Pin_d)|_BV(Pin_f)|_BV(Pin_g)|_BV(Pin_e));
+ 221               	.LM20:
+ 222 00a0 85B3      		in r24,53-0x20
+ 223 00a2 8378      		andi r24,lo8(-125)
+ 224 00a4 E0CF      		rjmp .L17
+ 225               	.L11:
+ 102:bibin.c       **** 			break;
+ 103:bibin.c       **** 			
+ 104:bibin.c       ****   case 7:  
+ 105:bibin.c       **** 			DATA_PORT|=(_BV(Pin_d)|_BV(Pin_e)|_BV(Pin_f)|_BV(Pin_g));
+ 227               	.LM21:
+ 228 00a6 85B3      		in r24,53-0x20
+ 229 00a8 8867      		ori r24,lo8(120)
+ 230 00aa 85BB      		out 53-0x20,r24
+ 106:bibin.c       **** 			DATA_PORT&=~(_BV(Pin_a)|_BV(Pin_c)|_BV(Pin_b));
+ 232               	.LM22:
+ 233 00ac 85B3      		in r24,53-0x20
+ 234 00ae 887F      		andi r24,lo8(-8)
+ 235 00b0 DACF      		rjmp .L17
+ 236               	.L12:
+ 107:bibin.c       **** 			break;
+ 108:bibin.c       **** 			
+ 109:bibin.c       ****   case 8:  
+ 110:bibin.c       **** 			DATA_PORT&=~(_BV(Pin_a)|_BV(Pin_d)|_BV(Pin_e)|_BV(Pin_c)|_BV(Pin_b)|_BV(Pin_f)|_BV(Pin_g));
+ 238               	.LM23:
+ 239 00b2 85B3      		in r24,53-0x20
+ 240 00b4 8078      		andi r24,lo8(-128)
+ 241 00b6 D7CF      		rjmp .L17
+ 242               	.L13:
+ 111:bibin.c       **** 			break;
+ 112:bibin.c       **** 		
+ 113:bibin.c       ****   case 9:  
+ 114:bibin.c       **** 			DATA_PORT|=(_BV(Pin_d)|_BV(Pin_e));
+ 244               	.LM24:
+ 245 00b8 85B3      		in r24,53-0x20
+ 246 00ba 8861      		ori r24,lo8(24)
+ 247 00bc 85BB      		out 53-0x20,r24
+ 115:bibin.c       **** 			DATA_PORT&=~(_BV(Pin_a)|_BV(Pin_c)|_BV(Pin_b)|_BV(Pin_f)|_BV(Pin_g));
+ 249               	.LM25:
+ 250 00be 85B3      		in r24,53-0x20
+ 251 00c0 8879      		andi r24,lo8(-104)
+ 252 00c2 D1CF      		rjmp .L17
+ 253               	/* epilogue: frame size=0 */
+ 254               	/* epilogue: noreturn */
+ 255               	/* epilogue end (size=0) */
+ 256               	/* function Display size 98 (98) */
+ 258               	.Lscope1:
+ 261               	.global	delay_ms
+ 263               	delay_ms:
+ 116:bibin.c       **** 			break;
+ 117:bibin.c       **** 					
+ 118:bibin.c       **** 	}}
+ 119:bibin.c       **** 
+ 120:bibin.c       **** /*----------------------------------------------------------------
+ 121:bibin.c       **** --------FUNCTION TO GENERATE DELAY IN MILLISECONDS----------------
+ 122:bibin.c       **** -----------------------------------------------------------------*/
+ 123:bibin.c       **** void delay_ms(unsigned char time_ms)
+ 124:bibin.c       **** {
+ 265               	.LM26:
+ 266               	/* prologue: frame size=0 */
+ 267               	/* prologue end (size=0) */
+ 125:bibin.c       **** 	unsigned short delay_count = F_CPU / 400;
+ 269               	.LM27:
+ 270 00c4 24EC      		ldi r18,lo8(2500)
+ 271 00c6 39E0      		ldi r19,hi8(2500)
+ 126:bibin.c       **** 
+ 127:bibin.c       **** 	unsigned short cnt;
+ 128:bibin.c       **** 	asm volatile ("\n"
+ 273               	.LM28:
+ 274               	/* #APP */
+ 275               		
+ 276               	L_dl1199:
+ 277 00c8 E22F      		mov r30, r18
+ 278 00ca F32F      		mov r31, r19
+ 279               	L_dl2199:
+ 280 00cc 3197      		sbiw r30, 1
+ 281 00ce F1F7      		brne L_dl2199
+ 282 00d0 8A95      		dec r24
+ 283 00d2 D1F7      		brne L_dl1199
+ 284               		
+ 285               	/* #NOAPP */
+ 286               	/* epilogue: frame size=0 */
+ 287 00d4 0895      		ret
+ 288               	/* epilogue end (size=1) */
+ 289               	/* function delay_ms size 23 (22) */
+ 295               	.Lscope2:
+ 297               	.global	main
+ 299               	main:
+ 301               	.LM29:
+ 302               	/* prologue: frame size=0 */
+ 303 00d6 C0E0      		ldi r28,lo8(__stack - 0)
+ 304 00d8 D0E0      		ldi r29,hi8(__stack - 0)
+ 305 00da DEBF      		out __SP_H__,r29
+ 306 00dc CDBF      		out __SP_L__,r28
+ 307               	/* prologue end (size=4) */
+ 309               	.LM30:
+ 310 00de C0E0      		ldi r28,lo8(0)
+ 311 00e0 D0E0      		ldi r29,hi8(0)
+ 313               	.LM31:
+ 314 00e2 0E94 0000 		call Init_Ports
+ 315               	.L20:
+ 317               	.LM32:
+ 318 00e6 CE01      		movw r24,r28
+ 319 00e8 0E94 0000 		call Display
+ 321               	.LM33:
+ 322 00ec 2196      		adiw r28,1
+ 324               	.LM34:
+ 325 00ee CA30      		cpi r28,10
+ 326 00f0 D105      		cpc r29,__zero_reg__
+ 327 00f2 10F0      		brlo .L22
+ 328 00f4 C0E0      		ldi r28,lo8(0)
+ 329 00f6 D0E0      		ldi r29,hi8(0)
+ 330               	.L22:
+ 332               	.LM35:
+ 333 00f8 84EF      		ldi r24,lo8(-12)
+ 334 00fa 0E94 0000 		call delay_ms
+ 336               	.LM36:
+ 337 00fe F3CF      		rjmp .L20
+ 338               	/* epilogue: frame size=0 */
+ 339               	/* epilogue: noreturn */
+ 340               	/* epilogue end (size=0) */
+ 341               	/* function main size 21 (17) */
+ 346               	.Lscope3:
+ 347               		.text
+ 349               	Letext:
+ 350               	/* File "bibin.c": code  145 = 0x0091 ( 139), prologues   4, epilogues   2 */
+DEFINED SYMBOLS
+                            *ABS*:00000000 bibin.c
+D:\DOCUME~1\ADMINI~1\LOCALS~1\Temp/ccszaaaa.s:3      *ABS*:0000003f __SREG__
+D:\DOCUME~1\ADMINI~1\LOCALS~1\Temp/ccszaaaa.s:4      *ABS*:0000003e __SP_H__
+D:\DOCUME~1\ADMINI~1\LOCALS~1\Temp/ccszaaaa.s:5      *ABS*:0000003d __SP_L__
+D:\DOCUME~1\ADMINI~1\LOCALS~1\Temp/ccszaaaa.s:6      *ABS*:00000000 __tmp_reg__
+D:\DOCUME~1\ADMINI~1\LOCALS~1\Temp/ccszaaaa.s:7      *ABS*:00000001 __zero_reg__
+D:\DOCUME~1\ADMINI~1\LOCALS~1\Temp/ccszaaaa.s:76     .text:00000000 Init_Ports
+D:\DOCUME~1\ADMINI~1\LOCALS~1\Temp/ccszaaaa.s:95     .text:00000006 Display
+D:\DOCUME~1\ADMINI~1\LOCALS~1\Temp/ccszaaaa.s:263    .text:000000c4 delay_ms
+D:\DOCUME~1\ADMINI~1\LOCALS~1\Temp/ccszaaaa.s:276    .text:000000c8 L_dl1199
+D:\DOCUME~1\ADMINI~1\LOCALS~1\Temp/ccszaaaa.s:279    .text:000000cc L_dl2199
+D:\DOCUME~1\ADMINI~1\LOCALS~1\Temp/ccszaaaa.s:299    .text:000000d6 main
+D:\DOCUME~1\ADMINI~1\LOCALS~1\Temp/ccszaaaa.s:349    .text:00000100 Letext
+
+UNDEFINED SYMBOLS
+__do_copy_data
+__do_clear_bss
+__stack

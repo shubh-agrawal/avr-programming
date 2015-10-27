@@ -1,0 +1,5 @@
+at24c02 eeprom
+address=000
+PortD Pins 7-SDL
+PIN6-SCL
+PARALLELPORT ACESSED
